@@ -3,7 +3,10 @@
   "description": "This is a Wicked Cool Extension!",
   "version": "1.0",
   "manifest_version": 3,
-    "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+    "permissions": ["storage", "activeTab", "scripting", "tabs","webRequest", "declarativeNetRequest", "http://*/*","https://*/*", "declarativeNetRequestFeedback"],
     "action": {
       "default_popup": "index.html",
       "default_title": "Open the popup",
@@ -13,6 +16,12 @@
         "48": "/images/zeeguu48.png",
         "128": "/images/zeeguu128.png"
     }
+  }, "declarative_net_request" : {
+    "rule_resources" : [{
+      "id": "ruleset_1",
+      "enabled": false,
+      "path": "rules.json"
+    }]
   },
     "icons": {
       "16": "/images/zeeguu16.png",

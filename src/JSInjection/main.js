@@ -8,6 +8,7 @@ import { getCurrentURL } from "../popup/functions";
 import { Article } from "./Article";
 import { cleanImages, removeSVG, removeLinks } from "./cleanArticle";
 
+
 export function Main() {
   const [article, setArticle] = useState();
   const [url, setUrl] = useState();
@@ -26,6 +27,11 @@ export function Main() {
     return <div>Loading</div>;
   }
 
+
+chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+  console.log(response.farewell);
+});
+
   let finalClean = cleanImages(article.content);
   if (url.match(wikiRegex)) {
     finalClean = removefromWiki(finalClean);
@@ -42,8 +48,18 @@ export function Main() {
     />
   );
 }
+
+
+
+document.open();
 //document.open()
-//document.close()
+document.close()
+//window.stop()
+//document.write(div2)
+
+
+
+
 const div = document.createElement("div");
 document.body.appendChild(div);
 ReactDOM.render(<Main />, div);

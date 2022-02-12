@@ -18,10 +18,20 @@ export default function Popup() {
     target: { tabId: tab.id },
     function: setCurrentURL(tab.url),
   });
+
   }
 
   let currentTab = getCurrentTab();
   chrome.storage.local.set({ tabId: currentTab });
+
+  
+  
+  
+  
+  
+
+
+
   
     return (
         <>
