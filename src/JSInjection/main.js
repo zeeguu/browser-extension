@@ -50,10 +50,13 @@ chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
 }
 
 
-
+const div2 = document.createElement("div");
+setTimeout(() => {
 document.open();
+document.write(div2)
 //document.open()
 document.close()
+}, 2000);
 //window.stop()
 //document.write(div2)
 

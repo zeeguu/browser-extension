@@ -8,7 +8,7 @@ export function ModalWithArticle({ title, content, modalIsOpen, setModalIsOpen }
     location.reload();
     setModalIsOpen(false);
 
-    chrome.runtime.sendMessage({greeting: "helloS"}, function(response) {
+    chrome.runtime.sendMessage({greeting: "hellos"}, function(response) {
       console.log(response.farewell);
     });
     };
