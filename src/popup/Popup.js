@@ -3,6 +3,7 @@ import Login from "./Login";
 import { getCurrentTab, reading, setCurrentURL } from "./functions";
 import { useState } from "react";
 import logo from "../images/zeeguu128.png";
+
 export default function Popup({loggedIn, setLoggedIn}) {
 
   async function openModal() {
@@ -30,6 +31,7 @@ export default function Popup({loggedIn, setLoggedIn}) {
     chrome.storage.local.set({ loggedIn: false });
     setLoggedIn(false)
   }
+
 
   return (
     <>

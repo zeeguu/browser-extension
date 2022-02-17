@@ -1,6 +1,8 @@
 /*global chrome*/
 
 import { useState } from "react";
+import { Zeeguu_API } from "../zeeguu-react/src/api/classDef";
+
 export default function Login({ setLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +16,11 @@ export default function Login({ setLoggedIn }) {
     //    signInAndRedirect(userInfo, history);
     // });
     //});
+    let api = new Zeeguu_API("https://api.zeeguu.org");
+    api.signIn("fridahelene96@gmail.com", "testpw4zetp", () => {
+      console.log("obviously didn't login"),
+      () => {console.log("success")}
+    });
   }
 
   /****  This is what Zeeguu does with sessionID  ****/
