@@ -18,7 +18,7 @@ export default function Login({ setLoggedIn }) {
     //});
     let api = new Zeeguu_API("https://api.zeeguu.org");
     api.signIn("fridahelene96@gmail.com", "testpw4zetp", () => {
-      console.log("obviously didn't login"),
+      console.log("obviously didn't login")
     }, () => {console.log("success")});
   }
 
