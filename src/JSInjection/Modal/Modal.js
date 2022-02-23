@@ -33,10 +33,25 @@ export function Modal({ title, content, modalIsOpen, setModalIsOpen, api, url })
     for (var i = 0, len = allTags.length; i < len; i++) {
       const content = allTags[i].textContent;
       const HTMLTag = allTags[i].nodeName;
-      let it = new InteractiveText(content, articleInfo, api);
+      if (allTags[i].nodeName === "UL") {
+        let children = Array.from(allTags[i].children);
+        let tag = allTags[i].nodeName;
+        let list = [];
+        children.forEach(child => {
+          let text = child.textContent;
+          let it = new InteractiveText(text, articleInfo, api)
+          list.push(it)
+        });
+        //console.log("list of children" + list)
+        let wholeListParagraph = {tag: tag, list: list}
+        arrOfInteractive.push(wholeListParagraph);
+      } else {
+        let it = new InteractiveText(content, articleInfo, api);
       // allTags[i].id is the id of the element (if there is one)
       const paragraphObject = {text: it, tag:HTMLTag}
       arrOfInteractive.push(paragraphObject);
+      }
+      
     }
     return arrOfInteractive;
   }
@@ -99,6 +114,22 @@ export function Modal({ title, content, modalIsOpen, setModalIsOpen, api, url })
                 />
               </CustomTag>
             )}
+            if (paragraph.tag === "UL") {
+              return (
+                <ul>
+                  {paragraph.list.map((li) => {
+                    console.log(li);
+                    <li>
+                       <TranslatableText
+                      interactiveText={li.text}
+                      translating={translating}
+                      pronouncing={pronouncing}
+                    />
+                    </li>
+                  })}
+                </ul>
+              )
+            }
         })}
       </StyledModal>
     </div>
