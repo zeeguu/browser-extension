@@ -18,7 +18,6 @@ export function Modal({ title, content, modalIsOpen, setModalIsOpen, api }) {
     for (var i = 0, len = allTags.length; i < len; i++) {
       const content = allTags[i].textContent;
       let it = new InteractiveHTML(content, articleInfo, api, allTags[i].nodeName);
-      // allTags[i].id is the id of the element (if there is one)
       arrOfInteractive.push(it);
     }
     return arrOfInteractive;
@@ -80,6 +79,19 @@ export function Modal({ title, content, modalIsOpen, setModalIsOpen, api }) {
                 />
               </CustomTag>
             )}
+            if (text.tag === "UL") {
+              const CustomTag = `${text.tag}`
+              return (
+                <CustomTag id="list">
+                  <p>this is the list</p>
+                </CustomTag>
+              )
+            }
+            if (text.tag === "LI") {
+              const li = `${<TranslatableText interactiveText={text} translating={translating} pronouncing={pronouncing}/>}`
+              
+            }
+
         })}
       </StyledModal>
     </div>
