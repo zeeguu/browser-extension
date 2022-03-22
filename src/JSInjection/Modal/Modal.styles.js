@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle, css } from "styled-components";
 import ReactModal from "react-modal";
-import { zeeguuOrange } from "../../zeeguu-react/src/components/colors";
+import { zeeguuOrange, zeeguuTransparentLightOrange } from "../../zeeguu-react/src/components/colors";
 export const GlobalStyle = createGlobalStyle`
    .ReactModal__Overlay{
         position: fixed;
@@ -96,7 +96,8 @@ export const StyledModal = styled(ReactModal)`
   }
 
   .feedbackBox {
-  background-color: rgb(255, 229, 158);
+  //background-color: rgb(255, 229, 158);
+  background-color: #e7e7e9;
   line-height: 1.2em;
   border: 0px solid rgb(255, 229, 158);
   font-size: 1.2em;
@@ -185,6 +186,18 @@ export const StyledModal = styled(ReactModal)`
     margin-bottom: 70px;
   }
 
+  // new buttons
+
+  .llyViG, .hKymwP, .bIINLz{
+    background: rgba(255, 208, 71, 0.6);
+    color: black !important;
+    border: 0.125em solid ${zeeguuTransparentLightOrange};
+
+    &:hover {
+      background-color: ${zeeguuTransparentLightOrange};
+    }
+  }
+
 `;
 
 export const StyledCloseButton = styled.div`
@@ -229,14 +242,20 @@ export const StyledButtonGrey = styled.button`
 `;
 
 export const StyledButtonOrange = styled.button`
-  background-color: ${zeeguuOrange};
+  //background-color: ${zeeguuOrange};
   font-weight: 500;
   color: white;
   height: 45px;
   display: inline-block;
   margin: 5px;
   height: 45px;
-  border-color: ${zeeguuOrange};
+  //border-color: ${zeeguuOrange};
+  background: #FFE391;
+  color: black !important;
+  border: 0.125em solid  #FFEED4;
+  &:hover {
+    background-color: #FFEED4;
+  }
   border-style: solid;
   border-width: 2px;
   border-radius: 10px;
@@ -297,9 +316,15 @@ export let NavigationButton = styled.button`
   ${(props) =>
     props.primary &&
     css`
-      background-color: ${zeeguuOrange} !important;
-      color: white !important;
-      border-color: ${zeeguuOrange};
+      background: rgba(255, 208, 71, 0.6);
+      color: black !important;
+      border: 0.125em solid ${zeeguuTransparentLightOrange};
+      &:hover {
+        background-color: ${zeeguuTransparentLightOrange};
+      }
+      //background-color: ${zeeguuOrange} !important;
+      //color: white !important;
+      //border-color: ${zeeguuOrange};
       border-style: solid;
       border-width: 2px;
       border-radius: 10px;
@@ -308,10 +333,16 @@ export let NavigationButton = styled.button`
   ${(props) =>
     props.secondary &&
     css`
-      border: none !important;
-      background-color: white !important;
-      color: ${zeeguuOrange} !important;
-      border-color: ${zeeguuOrange}!important;
+    background: rgba(255, 208, 71, 0.6);
+    color: black !important;
+    border: 0.125em solid ${zeeguuTransparentLightOrange};
+    &:hover {
+      background-color: ${zeeguuTransparentLightOrange};
+    }
+      //border: none !important;
+      //background-color: white !important;
+      //color: ${zeeguuOrange} !important;
+      //border-color: ${zeeguuOrange}!important;
       border-style: solid!important;
       border-width: 2px!important;
       border-radius: 10px!important;
