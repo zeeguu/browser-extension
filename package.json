@@ -48,6 +48,7 @@
     "pub-ci": "(cd src && git clone -b development https://github.com/zeeguu-ecosystem/zeeguu-react.git && cd zeeguu-react && npm ci) && npm-run-all build:* && zip -r build.zip build",
     "pub-ci-firefox": "(cd src && git clone -b development https://github.com/zeeguu-ecosystem/zeeguu-react.git && cd zeeguu-react && npm ci) && cp ./public/manifest.firefox.json ./public/manifest.json && npm-run-all build:* && zip -r build.zip build"
 
+    
   },
   "eslintConfig": {
     "extends": [
