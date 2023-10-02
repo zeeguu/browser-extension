@@ -16,6 +16,17 @@ export const StyledCloseButton = styled.div`
   -moz-osx-font-smoothing: grayscale;
 `;
 
+export const StyledSmallButton = styled.button`
+  color: ${colors.zeeguuOrange} !important;
+  background-color: ${colors.white} !important;
+  border-color: none;
+  cursor: pointer;
+  border-radius: 50px;
+  border: none;
+  padding: 8px;
+  margin: 8px 8px 8px 8px;
+  width: auto;
+`;
 
 export const StyledSmallButtonBlue = styled.button`
   color: ${colors.white} !important;
@@ -27,19 +38,20 @@ export const StyledSmallButtonBlue = styled.button`
   cursor: pointer;
   border-radius: 10px;
   border: none;
-  padding: 7px;
-  margin: 5px 5px 5px 0px;
+  padding: 8px;
+  margin: 8px 8px 8px 8px;
+  font-size: 18px;
 `;
 
 export const StyledSmallDisabledButton = styled.button`
   color: #696969!important;
-  background-color: ${colors.lightGray} !important;
+  background-color: ${colors.white} !important;
   border-color: ${colors.darkGray} !important;
   cursor: default;
   border-radius: 10px;
   border: none;
-  padding: 7px;
-  margin: 5px 5px 5px 0px;
+  padding: 8px;
+  margin: 8px 8px 8px 8px;
 `;
 
 export const StyledButtonBlue = styled.button`

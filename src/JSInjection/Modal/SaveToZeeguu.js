@@ -1,8 +1,11 @@
 import {
-  StyledSmallButtonBlue,
+  StyledSmallButton,
   StyledSmallDisabledButton,
 } from "./Buttons.styles";
 import {EXTENSION_SOURCE} from "../constants";
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import { useState } from "react";
 
 export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, personalCopySaved}) {
 
@@ -12,17 +15,22 @@ export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, per
     api.logReaderActivity(api.PERSONAL_COPY, articleId, "", EXTENSION_SOURCE);
     setPersonalCopySaved(true);
   }
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
       {personalCopySaved ? (
         <StyledSmallDisabledButton>
-          Saved on zeeguu.org
+          <BeenhereIcon fontSize="large"/> <br/>
+          Saved
         </StyledSmallDisabledButton>
       ) : (
-        <StyledSmallButtonBlue onClick={handlePostCopy}>
-          Save article to zeeguu.org
-        </StyledSmallButtonBlue>
+        <StyledSmallButton onClick={handlePostCopy}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
+          {isHovered ? <BeenhereIcon fontSize="large"/> : <BeenhereOutlinedIcon fontSize="large"/>} <br/>
+          {isHovered ? "Save" : ""}
+        </StyledSmallButton>
       )}
     </>
   );

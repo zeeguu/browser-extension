@@ -282,9 +282,12 @@ export const OverwriteZeeguu = styled.div`
 `;
 
 export const StyledHeading = styled.div`
-  height: 100px;
+  height: auto;
+  min-height: 100px;
+  overflow: hidden;
   background-color: ${colors.white};
   padding-top: 20px;
+  padding-bottom: 8px;
   right: 0px;
   top: 0px;
   position: sticky;

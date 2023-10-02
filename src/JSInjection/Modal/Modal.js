@@ -20,6 +20,8 @@ import Exercises from "../../zeeguu-react/src/exercises/Exercises";
 import ToolbarButtons from "./ToolbarButtons";
 import useUILanguage from "../../zeeguu-react/src/assorted/hooks/uiLanguageHook";
 import { cleanDOMAfter, getHTMLContent } from "../Cleaning/pageSpecificClean";
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
+import SaveToZeeguu from "./SaveToZeeguu";
 
 export function Modal({
   title,
@@ -227,22 +229,33 @@ export function Modal({
       >
         <OverwriteZeeguu>
           <StyledHeading>
-            <img
-              src={chrome.runtime.getURL("images/zeeguuLogo.svg")}
-              alt={"Zeeguu logo"}
-              className="logoModal"
-            />
-            <StyledCloseButton role="button" onClick={handleClose} id="qtClose">
-              X
-            </StyledCloseButton>
-            {readArticleOpen ? (
-              <ToolbarButtons
-                translating={translating}
-                pronouncing={pronouncing}
-                setTranslating={setTranslating}
-                setPronouncing={setPronouncing}
-              />
-            ) : null}
+            <div style={{ "float": "left", "width": "50%",  "display":"inline-flex"}}>
+              <div>
+              <img
+                    src={chrome.runtime.getURL("images/zeeguuLogo.svg")}
+                    alt={"Zeeguu logo"}
+                    className="logoModal"
+                />
+              </div> 
+              <SaveToZeeguu
+              api={api}
+              articleId={articleId}
+              setPersonalCopySaved={setPersonalCopySaved}
+              personalCopySaved={personalCopySaved} />
+            </div>
+            <div style={{ "float": "right", "width": "50%",  "display":"inline"}}>
+              <StyledCloseButton role="button" onClick={handleClose} id="qtClose">
+                <CloseSharpIcon/>
+              </StyledCloseButton>
+              {readArticleOpen ? (
+                <ToolbarButtons
+                  translating={translating}
+                  pronouncing={pronouncing}
+                  setTranslating={setTranslating}
+                  setPronouncing={setPronouncing}
+                />
+              ) : null}
+            </div>
           </StyledHeading>
           {readArticleOpen === true && (
             <ReadArticle

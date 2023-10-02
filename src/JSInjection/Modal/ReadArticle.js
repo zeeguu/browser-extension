@@ -41,15 +41,15 @@ export function ReadArticle({
   return (
     <>
       <div className="article-container">
-        <StyledSmallButtonBlue onClick={reportProblem}>
+        {/* <StyledSmallButtonBlue onClick={reportProblem}>
           Report problems
-        </StyledSmallButtonBlue>
-        <SaveToZeeguu
+        </StyledSmallButtonBlue> */}
+        {/* <SaveToZeeguu
           api={api}
           articleId={articleId}
           setPersonalCopySaved={setPersonalCopySaved}
           personalCopySaved={personalCopySaved}
-        />
+        /> */}
         <h1>
           <TranslatableText
             interactiveText={interactiveTitle}
