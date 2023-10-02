@@ -86,7 +86,6 @@ export default function ToolbarButtons({translating, setTranslating, pronouncing
         label={<small>{"Hear pronunciation"}</small>} /> 
       </FormGroup>
       </ThemeProvider> 
-        
     </s.Toolbar>
   );
 }
