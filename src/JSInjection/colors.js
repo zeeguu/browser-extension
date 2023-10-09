@@ -10,6 +10,7 @@ const colors = {
     lightGray: '#EAEBEB',
     darkGray: '#696969',
     gray: '#999999',
+    brown: '#A46A00',
 
     //modal
     boxGray: '#f2f3f4',

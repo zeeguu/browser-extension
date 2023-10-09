@@ -119,11 +119,9 @@ export const StyledModal = styled(ReactModal)`
   }
 
   .feedbackBox {
-    background-color: ${colors.boxGray};
-    line-height: 1.2em;
-    border: 0px solid ${colors.boxGrayBorder};
-    font-size: 1.2em;
-    max-width: 90%;
+    background-color: ${colors.lightOrange};
+    border: none;
+    max-width: 80%;
   }
 
   .floatRight {

@@ -229,7 +229,7 @@ export function Modal({
       >
         <OverwriteZeeguu>
           <StyledHeading>
-            <div style={{ "float": "left", "width": "50%",  "display":"inline-flex"}}>
+            <div style={{ "float": "left", "max-width": "50%",  "display":"inline-flex", "padding": "1.5em"}}>
               <div>
               <img
                     src={chrome.runtime.getURL("images/zeeguuLogo.svg")}
