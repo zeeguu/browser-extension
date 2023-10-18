@@ -27,6 +27,8 @@ import colors from "../colors";
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import {SpeechContext} from "../../zeeguu-react/src/exercises/SpeechContext";
+import ZeeguuSpeech from "../../zeeguu-react/src/speech/ZeeguuSpeech";
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -77,6 +79,9 @@ export function Modal({
   const toggleButtonGroup = () => {
     setButtonGroupVisible(!buttonGroupVisible);
   };
+  const [speechEngine, setSpeechEngine] = useState();
+
+
 
   useUILanguage();
 
@@ -167,7 +172,14 @@ export function Modal({
           }
         }, 0);
       }
+
+      let se = new ZeeguuSpeech(api, articleInfo.language);
+      setSpeechEngine(se);
+
     }
+
+
+
     cleanDOMAfter(url);
   }, [articleInfo]);
 
@@ -244,6 +256,7 @@ export function Modal({
   return (
     <>
       <div>
+      <SpeechContext.Provider value={speechEngine}>
       <GlobalStyle />
       <StyledModal
         isOpen={modalIsOpen}
@@ -312,14 +325,14 @@ export function Modal({
                 className="exercises"
                 api={api}
                 articleID={articleId()}
-                source={EXTENSION_SOURCE}
-                backButtonAction={openArticle}
-                keepExercisingAction={reloadExercises}
+                openExercises={openExercises}
+                openArticle={openArticle}
               />
             </>
           )}
         </OverwriteZeeguu>   
-      </StyledModal>        
+      </StyledModal>  
+      </SpeechContext.Provider>      
     </div>
     <div sx={{zIndex: 4}}>
       <Box sx={{ display: 'flex', flexDirection: 'column', float: 'right', right: '3em', bottom: '7em', overflow: 'hidden', width: "17em", position: 'absolute' }}>
@@ -335,6 +348,5 @@ export function Modal({
         </Box> 
     </div>
     </>
-   
   );
 }
