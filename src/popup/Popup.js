@@ -22,6 +22,10 @@ import PopupLoading from "./PopupLoading";
 import PopupContent from "./PopupContent";
 import { EXTENSION_SOURCE } from "../JSInjection/constants";
 import { checkLanguageSupport, setUserInLocalStorage } from "./functions";
+import { setCurrentURL } from "./functions";
+import { PrimaryButton, NotifyButton } from "./Popup.styles";
+import sendFeedbackEmail from "../JSInjection/Modal/sendFeedbackEmail";
+import { runningInChromeDesktop} from "../zeeguu-react/src/utils/misc/browserDetection";
 
 //for isProbablyReadable options object
 const minLength = 120;
@@ -115,63 +119,70 @@ export default function Popup({ loggedIn, setLoggedIn }) {
     removeCookiesOnZeeguu(ZEEGUU_ORG);
   }
 
+  const openLogin = () => {
+    window.open('https://www.zeeguu.org/login', '_blank');
+  };
+
   if (loggedIn === false) {
     return (
       <PopUp>
         <HeadingContainer>
           <img src={logo} alt="Zeeguu logo" />
         </HeadingContainer>
-        <Login
+        <PrimaryButton
+          onClick={openLogin}
+          name="toLogin"
+          className="toLoginButton"
+        >Login</PrimaryButton>
+        {/* <Login
           setLoggedIn={setLoggedIn}
           handleSuccessfulSignIn={handleSuccessfulSignIn}
           api={api}
-        />
+        /> */}
       </PopUp>
     );
   }
 
   if (loggedIn === true) {
     if (
-      user === undefined ||
-      isReadable === undefined ||
-      languageSupported === undefined ||
+      user === setUser ||
+      isReadable === true ||
+      languageSupported === true ||
       showLoader === true
     ) {
-      return (
-        <PopUp>
-          <PopupLoading
-            showLoader={showLoader}
-            setShowLoader={setShowLoader}
-          ></PopupLoading>
-        </PopUp>
-      );
+      openModal()
     }
-    return (
-      <PopUp>
-        <HeadingContainer>
-          <img src={logo} alt="Zeeguu logo" />
-        </HeadingContainer>
-        <MiddleContainer>
-          <PopupContent
-            isReadable={isReadable}
-            languageSupported={languageSupported}
-            user={user}
-            tab={tab}
-            api={api}
-            sessionId={user.session}
-          ></PopupContent>
-        </MiddleContainer>
-        <BottomContainer>
-          <BottomButton
-            onClick={() =>
-              window.open("https://zeeguu.org/account_settings", "_blank")
-            }
-          >
-            Settings
-          </BottomButton>
-          <BottomButton onClick={handleSignOut}>Logout</BottomButton>
-        </BottomContainer>
-      </PopUp>
-    );
-  }
+    const [feedbackSent, setFeedbackSent] = useState(false);
+    const LANGUAGE_FEEDBACK = "I want this language to be supported";
+    const READABILITY_FEEDBACK = "I think this article should be readable";
+    
+    async function openModal() {
+      if (runningInChromeDesktop()) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ["./main.js"],
+          func: setCurrentURL(tab.url),
+        });
+      } else {
+        browser.tabs.executeScript(
+          tab.id,
+          { file: "./main.js" },
+          setCurrentURL(tab.url)
+        );
+      }
+      window.close();
+    }
+
+    function sendFeedback(feedback, url, articleId, feedbackType) {
+      api.session = sessionId;
+      sendFeedbackEmail(api, feedback, url, articleId, feedbackType);
+      setFeedbackSent(true);
+    }
+
+  return (
+    < >
+
+    </>
+  );
+          }
 }

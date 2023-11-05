@@ -7,7 +7,8 @@ export const StyledPrimaryButton = styled.button`
   border-color:  ${colors.buttonBorder} !important;
 
   :hover{
-    background-color: ${colors.zeeguuVarmYellow} !important;
+    background-color: ${colors.lightOrange} !important;
+    color: ${colors.gray};
   }
 
   color: ${colors.white};
@@ -27,11 +28,9 @@ export const StyledPrimaryButton = styled.button`
 
 export const StyledCloseButton = styled.div`
   cursor: pointer;
-  right: 0px;
-  padding: 20px;
+  padding: 0%;
   height: 55px;
-  margin: 10px;
-  padding: 1px;
+  margin: 0px 0px 20px 20px;
   float: right;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
@@ -68,14 +67,14 @@ export const StyledSmallButtonBlue = styled.button`
 `;
 
 export const StyledSmallDisabledButton = styled.button`
-  color: #696969!important;
+  color: #b7b7b7 !important;
   background-color: ${colors.white} !important;
-  border-color: ${colors.darkGray} !important;
+  border-color: #b7b7b7 !important;
   cursor: default;
   border-radius: 10px;
   border: none;
-  padding: 8px;
-  margin: 8px 8px 8px 8px;
+  padding: 5px;
+  margin: 5px 5px 5px 5px;
 `;
 
 export const StyledButtonBlue = styled.button`

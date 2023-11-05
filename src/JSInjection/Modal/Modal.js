@@ -6,6 +6,7 @@ import {
   GlobalStyle,
   OverwriteZeeguu,
 } from "./Modal.styles";
+import UserFeedback from "./UserFeedback";
 import { StyledCloseButton } from "./Buttons.styles";
 import ZeeguuLoader from "../ZeeguuLoader";
 import { EXTENSION_SOURCE } from "../constants";
@@ -22,7 +23,14 @@ import useUILanguage from "../../zeeguu-react/src/assorted/hooks/uiLanguageHook"
 import { cleanDOMAfter, getHTMLContent } from "../Cleaning/pageSpecificClean";
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import SaveToZeeguu from "./SaveToZeeguu";
+import colors from "../colors";
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import SettingsIcon from '@mui/icons-material/Settings';
 export function Modal({
   title,
   content,
@@ -37,7 +45,7 @@ export function Modal({
   const [exerciseOpen, setExerciseOpen] = useState(false);
 
   const [translating, setTranslating] = useState(true);
-  const [pronouncing, setPronouncing] = useState(false);
+  const [pronouncing, setPronouncing] = useState(true);
 
   const [articleInfo, setArticleInfo] = useState();
   const [interactiveTextArray, setInteractiveTextArray] = useState();
@@ -54,6 +62,21 @@ export function Modal({
   logContextRef.current = logContext;
   const articleInfoRef = useRef({});
   articleInfoRef.current = articleInfo;
+
+  const openSettings = () => {
+    window.open('https://www.zeeguu.org/account_settings', '_blank');
+  };
+
+  const buttons = [
+    <UserFeedback api={api} articleId={articleId} url={url} />,
+    <Button  style={{ textTransform: 'none', justifyContent:'space-between', fontSize: '0.9rem', fontWeight: '200', backgroundColor:`${colors.lighterBlue}`, color: `${colors.black}`}} key="two" onClick={openSettings}>Settings <SettingsIcon sx={{ fontSize: '0.9rem' }}/></Button>,
+  ];
+
+  const [buttonGroupVisible, setButtonGroupVisible] = useState(false);
+
+  const toggleButtonGroup = () => {
+    setButtonGroupVisible(!buttonGroupVisible);
+  };
 
   useUILanguage();
 
@@ -219,7 +242,8 @@ export function Modal({
   }
 
   return (
-    <div>
+    <>
+      <div>
       <GlobalStyle />
       <StyledModal
         isOpen={modalIsOpen}
@@ -294,8 +318,23 @@ export function Modal({
               />
             </>
           )}
-        </OverwriteZeeguu>
-      </StyledModal>
+        </OverwriteZeeguu>   
+      </StyledModal>        
     </div>
+    <div sx={{zIndex: 4}}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', float: 'right', right: '3em', bottom: '7em', overflow: 'hidden', width: "17em", position: 'absolute' }}>
+               {buttonGroupVisible && (
+                <ButtonGroup sx={{ zIndex: 4, boxShadow: 0 }} orientation="vertical" aria-label="vertical contained button group" variant="contained">
+                  {buttons}
+                </ButtonGroup>)}
+                <div display= "flex" float= "left">
+                  <Fab sx={{margin: "10px"}} color="primary" aria-label="add" position="fixed" onClick={toggleButtonGroup}>
+                      {buttonGroupVisible ? <CloseSharpIcon /> : <AddIcon />}
+                  </Fab>
+                </div>
+        </Box> 
+    </div>
+    </>
+   
   );
 }

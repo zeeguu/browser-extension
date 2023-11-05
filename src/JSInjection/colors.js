@@ -4,7 +4,9 @@ const colors = {
     black: 'black',
 
     //button colors and signature blues
-    darkBlue: ' #2f77ad',
+    darkBlue: '#2f77ad',
+    lightBlue: '#63a1cf',
+    lighterBlue: '#CCDEFF',
     hoverBlue: '#4f97cf',
     buttonBorder: '#3079b0',
     lightGray: '#EAEBEB',

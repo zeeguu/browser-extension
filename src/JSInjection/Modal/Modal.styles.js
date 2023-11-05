@@ -6,11 +6,11 @@ export const GlobalStyle = createGlobalStyle`
    .reader-overlay{
         position: fixed;
         top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        left: auto;
+        right: auto;
+        bottom: auto;
         background-color: ${colors.overlay} !important;
-        z-index: 5000000;
+        z-index: 3;
       }
 
     .feedback-overlay{
@@ -35,7 +35,7 @@ export const StyledModal = styled(ReactModal)`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
+  z-index: 2;
   background-color: ${colors.white};
   padding: 0% 2% 2% 2%;
   margin-top: 0px;
@@ -92,7 +92,7 @@ export const StyledModal = styled(ReactModal)`
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
 
   ::-webkit-scrollbar-track {
@@ -115,11 +115,11 @@ export const StyledModal = styled(ReactModal)`
 
   .article-container {
     padding: 5px 50px 0px 50px;
-    margin-bottom: 3em;
+    margin-bottom: 10em;
   }
 
   .feedbackBox {
-    background-color: ${colors.lightOrange};
+    background-color: ${colors.lighterBlue};
     border: none;
     max-width: 80%;
   }

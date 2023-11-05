@@ -51,7 +51,7 @@ export function Main() {
       content={cleanedContent}
       api={api}
       url={url}
-    />
+      />
   );
 }
 

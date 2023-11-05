@@ -1,5 +1,4 @@
 import * as s from "../../zeeguu-react/src/reader/ArticleReader.sc"
-import strings from "../../zeeguu-react/src/i18n/definitions"
 import {toggle} from "../../zeeguu-react/src/reader/ArticleReader"
 import * as React from 'react';
 import FormGroup from '@mui/material/FormGroup';
@@ -7,7 +6,36 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 import FormHelperText from '@mui/material/FormHelperText';
-import colors from "../colors";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const t = createTheme({
+  components: {
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#ccc"
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#ffbb54"
+          }
+        },
+        track: {
+          // Controls default (unchecked) color for the track
+          opacity: 0.7,
+          backgroundColor: "#999999",
+          ".Mui-checked.Mui-checked + &": {
+            // Controls checked color for the track
+            opacity: 0.5,
+            backgroundColor: "#ffbb54"
+          }
+        }
+      }
+    }
+  }
+});
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -44,9 +72,11 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 
 
 export default function ToolbarButtons({translating, setTranslating, pronouncing, setPronouncing}) {
+  console.log(translating, pronouncing)
   return (
     <s.Toolbar style={{"float": "right", "width": "auto", "height": "auto"}}>
-       <FormGroup>
+      <ThemeProvider theme={t}>
+      <FormGroup>
           <FormHelperText>{<small>{"Click word(s) to:"}</small>}</FormHelperText>
           <FormControlLabel control={<Android12Switch defaultChecked />} className={translating ? "selected" : ""}
         onClick={(e) => toggle(translating, setTranslating)} 
@@ -55,6 +85,8 @@ export default function ToolbarButtons({translating, setTranslating, pronouncing
         onClick={(e) => toggle(pronouncing, setPronouncing)}
         label={<small>{"Hear pronunciation"}</small>} /> 
       </FormGroup>
+      </ThemeProvider> 
+        
     </s.Toolbar>
   );
 }

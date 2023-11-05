@@ -110,7 +110,7 @@ export function ReadArticle({
           openReview={openReview}
         />
 
-        <UserFeedback api={api} articleId={articleId} url={url} />
+        {/* <UserFeedback api={api} articleId={articleId} url={url} /> */}
       </div>
     </>
   );

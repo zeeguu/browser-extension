@@ -2,13 +2,15 @@ import {
   StyledSmallButton,
   StyledSmallDisabledButton,
 } from "./Buttons.styles";
+import { useState } from "react";
 import {EXTENSION_SOURCE} from "../constants";
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
-import { useState } from "react";
+import Tooltip from '@mui/material/Tooltip';
+
+
 
 export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, personalCopySaved}) {
-
   function handlePostCopy() {
     let article = { article_id: articleId };
     api.makePersonalCopy(article, (message) => console.log(message));
@@ -20,10 +22,12 @@ export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, per
   return (
     <>
       {personalCopySaved ? (
-        <StyledSmallDisabledButton>
-          <BeenhereIcon fontSize="large"/> <br/>
-          Saved
-        </StyledSmallDisabledButton>
+        <Tooltip title="Saved to your Zeeguu account" arrow>
+          <StyledSmallDisabledButton>
+            <BeenhereIcon fontSize="large"/> <br/>
+            Saved
+          </StyledSmallDisabledButton>
+        </Tooltip>
       ) : (
         <StyledSmallButton onClick={handlePostCopy}
         onMouseEnter={() => setIsHovered(true)}
