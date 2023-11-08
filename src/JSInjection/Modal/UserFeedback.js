@@ -18,7 +18,7 @@ export default function UserFeedback({ api, articleId, url }) {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const setModalIsOpenToTrue = () => {
-    if (feedback === "") {
+    if (feedback === "" || feedback.length>0 && feedback.replace(/\s/g, '').length==0 || feedback.length==0) {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
@@ -70,7 +70,8 @@ export default function UserFeedback({ api, articleId, url }) {
                   onChange={handleChange}
                   defaultValue="Small"
                   margin="normal"
-                  size="small" />
+                  size="small" 
+                  error={isEmpty}/>
                   <IconButton  type="submit" value="Send feedback" onClick={setModalIsOpenToTrue} id="feedback-box" aria-label="send"> <SendIcon sx={{ color: `${colors.darkBlue}`, fontSize:"medium" }}/></IconButton>
           </form>
         </AccordionDetails>
