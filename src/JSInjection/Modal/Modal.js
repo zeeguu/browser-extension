@@ -276,7 +276,7 @@ export function Modal({
               </div> 
               <SaveToZeeguu
               api={api}
-              articleId={articleId}
+              articleId={articleId()}
               setPersonalCopySaved={setPersonalCopySaved}
               personalCopySaved={personalCopySaved} />
             </div>

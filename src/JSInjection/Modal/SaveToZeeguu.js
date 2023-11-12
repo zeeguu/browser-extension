@@ -12,8 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, personalCopySaved}) {
   function handlePostCopy() {
-    let article = { article_id: articleId };
-    api.makePersonalCopy(article, (message) => console.log(message));
+    api.makePersonalCopy(articleId, (message) => console.log(message));
     api.logReaderActivity(api.PERSONAL_COPY, articleId, "", EXTENSION_SOURCE);
     setPersonalCopySaved(true);
   }

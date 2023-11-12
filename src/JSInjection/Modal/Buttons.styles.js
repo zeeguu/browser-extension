@@ -69,7 +69,7 @@ export const StyledSmallButtonBlue = styled.button`
 export const StyledSmallDisabledButton = styled.button`
   color: #b7b7b7 !important;
   background-color: ${colors.white} !important;
-  border-color: #b7b7b7 !important;
+  border-color: none;
   cursor: default;
   border-radius: 10px;
   border: none;
