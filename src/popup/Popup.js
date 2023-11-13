@@ -1,32 +1,17 @@
 /*global chrome*/
-import Login from "./Login";
 import { checkReadability } from "./checkReadability";
-import {
-  getUserInfo,
-  saveCookiesOnZeeguu,
-  removeCookiesOnZeeguu,
-} from "./cookies";
+import { getUserInfo} from "./cookies";
 import { useState, useEffect } from "react";
 import Zeeguu_API from "../../src/zeeguu-react/src/api/Zeeguu_API";
 import { getSourceAsDOM } from "./functions";
 import { isProbablyReaderable } from "@mozilla/readability";
 import logo from "../images/zeeguu128.png";
-import {
-  HeadingContainer,
-  PopUp,
-  BottomButton,
-  BottomContainer,
-  MiddleContainer,
-} from "./Popup.styles";
-import PopupLoading from "./PopupLoading";
-import PopupContent from "./PopupContent";
+import { HeadingContainer, PopUp } from "./Popup.styles";
 import { EXTENSION_SOURCE } from "../JSInjection/constants";
 import { checkLanguageSupport, setUserInLocalStorage } from "./functions";
 import { setCurrentURL } from "./functions";
-import { PrimaryButton, NotifyButton } from "./Popup.styles";
-import sendFeedbackEmail from "../JSInjection/Modal/sendFeedbackEmail";
+import { PrimaryButton } from "./Popup.styles";
 import { runningInChromeDesktop} from "../zeeguu-react/src/utils/misc/browserDetection";
-
 //for isProbablyReadable options object
 const minLength = 120;
 const minScore = 20;
@@ -41,7 +26,10 @@ export default function Popup({ loggedIn, setLoggedIn }) {
   const [isReadable, setIsReadable] = useState();
   const [languageSupported, setLanguageSupported] = useState();
   const [showLoader, setShowLoader] = useState(false);
-
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const LANGUAGE_FEEDBACK = "I want this language to be supported";
+  const READABILITY_FEEDBACK = "I think this article should be readable";
+  
   useEffect(() => {
     if (loggedIn) {
       getUserInfo(ZEEGUU_ORG, setUser);
@@ -84,44 +72,26 @@ export default function Popup({ loggedIn, setLoggedIn }) {
     }
   }, [tab, user]);
 
-  // if we display the loader, display it for at least 800 ms
-  useEffect(() => {
-    if (showLoader === true) {
-      let timer = setTimeout(() => {
-        setShowLoader(false);
-      }, 900);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [showLoader]);
-
-  function handleSuccessfulSignIn(userInfo, session) {
-    setUser({
-      session: session,
-      name: userInfo.name,
-      learned_language: userInfo.learned_language,
-      native_language: userInfo.native_language,
-    });
-    chrome.storage.local.set({ userInfo: userInfo });
-    chrome.storage.local.set({ sessionId: session });
-    setLoggedIn(true);
-    saveCookiesOnZeeguu(userInfo, session, ZEEGUU_ORG);
-  }
-
-  function handleSignOut(e) {
-    e.preventDefault();
-    setLoggedIn(false);
-    setUser();
-    chrome.storage.local.set({ loggedIn: false });
-    chrome.storage.local.remove(["sessionId"]);
-    chrome.storage.local.remove(["userInfo"]);
-    removeCookiesOnZeeguu(ZEEGUU_ORG);
-  }
-
   const openLogin = () => {
     window.open('https://www.zeeguu.org/login', '_blank');
   };
+
+  async function openModal() {
+    if (runningInChromeDesktop()) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["./main.js"],
+        func: setCurrentURL(tab.url),
+      });
+    } else {
+      browser.tabs.executeScript(
+        tab.id,
+        { file: "./main.js" },
+        setCurrentURL(tab.url)
+      );
+    }
+    window.close();
+  }
 
   if (loggedIn === false) {
     return (
@@ -132,57 +102,17 @@ export default function Popup({ loggedIn, setLoggedIn }) {
         <PrimaryButton
           onClick={openLogin}
           name="toLogin"
-          className="toLoginButton"
-        >Login</PrimaryButton>
-        {/* <Login
-          setLoggedIn={setLoggedIn}
-          handleSuccessfulSignIn={handleSuccessfulSignIn}
-          api={api}
-        /> */}
+          className="toLoginButton">Login
+        </PrimaryButton>
       </PopUp>
     );
+  } else{
+    if (isReadable === true && languageSupported === true) {
+      openModal();
+    }   
   }
-
-  if (loggedIn === true) {
-    if (
-      user === setUser ||
-      isReadable === true ||
-      languageSupported === true ||
-      showLoader === true
-    ) {
-      openModal()
-    }
-    const [feedbackSent, setFeedbackSent] = useState(false);
-    const LANGUAGE_FEEDBACK = "I want this language to be supported";
-    const READABILITY_FEEDBACK = "I think this article should be readable";
-    
-    async function openModal() {
-      if (runningInChromeDesktop()) {
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          files: ["./main.js"],
-          func: setCurrentURL(tab.url),
-        });
-      } else {
-        browser.tabs.executeScript(
-          tab.id,
-          { file: "./main.js" },
-          setCurrentURL(tab.url)
-        );
-      }
-      window.close();
-    }
-
-    function sendFeedback(feedback, url, articleId, feedbackType) {
-      api.session = sessionId;
-      sendFeedbackEmail(api, feedback, url, articleId, feedbackType);
-      setFeedbackSent(true);
-    }
-
   return (
     < >
-
     </>
   );
-          }
 }

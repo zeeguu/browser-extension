@@ -81,8 +81,6 @@ export function Modal({
   };
   const [speechEngine, setSpeechEngine] = useState();
 
-
-
   useUILanguage();
 
   function articleId() {
