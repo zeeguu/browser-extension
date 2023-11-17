@@ -15,7 +15,7 @@
 
   "action": {
     "default_popup": "index.html",
-    "default_title": "Open the popup",
+    "default_title": "Read with Zeeguu",
     "default_icon": {
       "16": "/images/zeeguu16.png",
       "32": "/images/zeeguu32.png",

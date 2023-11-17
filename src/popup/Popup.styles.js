@@ -29,12 +29,12 @@ export const PopUp = styled.div`
   background-color: aqua;
   flex-direction: column;
   background-color: ${colors.white};
-  border-color: rgb(246, 246, 246);
-  border-style: solid;
-  border-width: 2px;
+  border: none;
   padding: 10px;
   width: 230px;
   height: auto;
+  min-height: 150px;
+  border-radius: 10px;
 
   button {
     padding: 14px 20px;

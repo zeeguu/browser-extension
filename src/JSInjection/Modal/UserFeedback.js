@@ -61,7 +61,7 @@ export default function UserFeedback({ api, articleId, url }) {
           <Typography sx={{ fontWeight: '200', fontSize: '0.9rem' }}>Report problems</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <form fullWidth style={{ display: 'flex', alignContent: 'center', padding: '0.5rem'}} onSubmit={submitFeedback}>
+          <form fullWidth style={{ display: 'flex', alignItems: 'center', padding: '0.5rem'}} onSubmit={submitFeedback}>
                   <TextField id="outlined-multiline-flexible"
                   label="Feedback"
                   multiline
@@ -72,7 +72,11 @@ export default function UserFeedback({ api, articleId, url }) {
                   margin="normal"
                   size="small" 
                   error={isEmpty}/>
-                  <IconButton  type="submit" value="Send feedback" onClick={setModalIsOpenToTrue} id="feedback-box" aria-label="send"> <SendIcon sx={{ color: `${colors.darkBlue}`, fontSize:"medium" }}/></IconButton>
+                  <div>
+                    <IconButton  type="submit" value="Send feedback" onClick={setModalIsOpenToTrue} id="feedback-box" aria-label="send"> 
+                      <SendIcon sx={{ color: `${colors.darkBlue}`, fontSize:"medium" }}/>
+                    </IconButton>
+                  </div>
           </form>
         </AccordionDetails>
       </Accordion> 

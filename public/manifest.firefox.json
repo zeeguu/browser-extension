@@ -27,7 +27,7 @@
       "48": "/images/zeeguu48.png",
       "128": "/images/zeeguu128.png"
     },
-    "default_title": "Open the popup",
+    "default_title": "Read with Zeeguu",
     "default_popup": "index.html"
   },
   "background": {

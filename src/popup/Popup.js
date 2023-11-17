@@ -6,12 +6,17 @@ import Zeeguu_API from "../../src/zeeguu-react/src/api/Zeeguu_API";
 import { getSourceAsDOM } from "./functions";
 import { isProbablyReaderable } from "@mozilla/readability";
 import logo from "../images/zeeguu128.png";
-import { HeadingContainer, PopUp } from "./Popup.styles";
+import {
+  HeadingContainer,
+  PopUp,
+  MiddleContainer,
+} from "./Popup.styles";
+import PopupLoading from "./PopupLoading";
+import PopupContent from "./PopupContent";
 import { EXTENSION_SOURCE } from "../JSInjection/constants";
 import { checkLanguageSupport, setUserInLocalStorage } from "./functions";
-import { setCurrentURL } from "./functions";
 import { PrimaryButton } from "./Popup.styles";
-import { runningInChromeDesktop} from "../zeeguu-react/src/utils/misc/browserDetection";
+
 //for isProbablyReadable options object
 const minLength = 120;
 const minScore = 20;
@@ -26,10 +31,7 @@ export default function Popup({ loggedIn, setLoggedIn }) {
   const [isReadable, setIsReadable] = useState();
   const [languageSupported, setLanguageSupported] = useState();
   const [showLoader, setShowLoader] = useState(false);
-  const [feedbackSent, setFeedbackSent] = useState(false);
-  const LANGUAGE_FEEDBACK = "I want this language to be supported";
-  const READABILITY_FEEDBACK = "I think this article should be readable";
-  
+
   useEffect(() => {
     if (loggedIn) {
       getUserInfo(ZEEGUU_ORG, setUser);
@@ -72,26 +74,21 @@ export default function Popup({ loggedIn, setLoggedIn }) {
     }
   }, [tab, user]);
 
+  // if we display the loader, display it for at least 800 ms
+  useEffect(() => {
+    if (showLoader === true) {
+      let timer = setTimeout(() => {
+        setShowLoader(false);
+      }, 900);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [showLoader]);
+
   const openLogin = () => {
     window.open('https://www.zeeguu.org/login', '_blank');
   };
-
-  async function openModal() {
-    if (runningInChromeDesktop()) {
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ["./main.js"],
-        func: setCurrentURL(tab.url),
-      });
-    } else {
-      browser.tabs.executeScript(
-        tab.id,
-        { file: "./main.js" },
-        setCurrentURL(tab.url)
-      );
-    }
-    window.close();
-  }
 
   if (loggedIn === false) {
     return (
@@ -99,20 +96,48 @@ export default function Popup({ loggedIn, setLoggedIn }) {
         <HeadingContainer>
           <img src={logo} alt="Zeeguu logo" />
         </HeadingContainer>
-        <PrimaryButton
-          onClick={openLogin}
-          name="toLogin"
-          className="toLoginButton">Login
-        </PrimaryButton>
+        <MiddleContainer>
+          <PrimaryButton
+            onClick={openLogin}
+            name="toLogin"
+            className="toLoginButton">Login
+          </PrimaryButton>
+        </MiddleContainer>
       </PopUp>
     );
-  } else{
-    if (isReadable === true && languageSupported === true) {
-      openModal();
-    }   
+  } else {
+    if (
+      user === undefined ||
+      isReadable === undefined ||
+      languageSupported === undefined ||
+      showLoader === true
+    ) {
+      return (
+        <PopUp>
+          <PopupLoading
+            showLoader={showLoader}
+            setShowLoader={setShowLoader}
+          ></PopupLoading>
+        </PopUp>
+      );
+    } else {
+      return (
+        <PopUp>
+          <HeadingContainer>
+            <img src={logo} alt="Zeeguu logo" />
+          </HeadingContainer>
+          <MiddleContainer>
+            <PopupContent
+              isReadable={isReadable}
+              languageSupported={languageSupported}
+              user={user}
+              tab={tab}
+              api={api}
+              sessionId={user.session}
+            ></PopupContent>
+          </MiddleContainer>
+        </PopUp>
+      );
+    }
   }
-  return (
-    < >
-    </>
-  );
 }
