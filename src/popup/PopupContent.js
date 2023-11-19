@@ -48,7 +48,7 @@ export default function PopupContent({
     return (
       <>
         {user ? <h1>Oh no, {user.name}!</h1> : null}
-        <p>Not readable...</p>
+        <p>This text is not readable</p>
       </>
     );
   }
@@ -57,7 +57,7 @@ export default function PopupContent({
       return (
         <>
           {user ? <h1>Oh no, {user.name}!</h1> : null}
-          <p>Language not supported...</p>
+          <p>This language not supported yet</p>
         </>
       );
     }

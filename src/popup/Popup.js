@@ -10,12 +10,14 @@ import {
   HeadingContainer,
   PopUp,
   MiddleContainer,
+  BottomContainer,
 } from "./Popup.styles";
 import PopupLoading from "./PopupLoading";
 import PopupContent from "./PopupContent";
 import { EXTENSION_SOURCE } from "../JSInjection/constants";
 import { checkLanguageSupport, setUserInLocalStorage } from "./functions";
 import { PrimaryButton } from "./Popup.styles";
+import { StyledPrimaryButton } from "../JSInjection/Modal/Buttons.styles";
 
 //for isProbablyReadable options object
 const minLength = 120;
@@ -96,13 +98,13 @@ export default function Popup({ loggedIn, setLoggedIn }) {
         <HeadingContainer>
           <img src={logo} alt="Zeeguu logo" />
         </HeadingContainer>
-        <MiddleContainer>
-          <PrimaryButton
+        <BottomContainer>
+          <StyledPrimaryButton
             onClick={openLogin}
             name="toLogin"
-            className="toLoginButton">Login
-          </PrimaryButton>
-        </MiddleContainer>
+            className="toLoginButton">Login            
+          </StyledPrimaryButton>
+        </BottomContainer>
       </PopUp>
     );
   } else {
