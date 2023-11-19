@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Alert from '@mui/material/Alert';
 import colors from "../colors";
 
@@ -50,7 +51,7 @@ const UserFeedback = ({ api, articleId, url }) => {
           borderTopLeftRadius: '0.2rem',
           borderTopRightRadius: '0.2rem'
         }}
-        expandIcon={<SendIcon sx={{ color: colors.black, fontSize: '0.9rem' }} />}
+        expandIcon={<ExpandMoreIcon sx={{ color: colors.black, fontSize: '0.9rem' }} />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
