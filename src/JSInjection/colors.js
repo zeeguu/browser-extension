@@ -23,7 +23,7 @@ const colors = {
 
     //loading
     circleBorderGray: '#f4f4f6',
-    lightOrange: '#ffe5b9',
+    lightOrange: '#ffdead',
     zeeguuOrange: '#ffbb54',
 
     //scrollbar

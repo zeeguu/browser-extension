@@ -2,16 +2,15 @@ import styled, { css } from "styled-components";
 import colors from "../colors";
 
 export const StyledPrimaryButton = styled.button`
-  color: ${colors.white} !important;
-  background-color: ${colors.zeeguuOrange} !important;
+  color: ${colors.white};
+  background-color: ${colors.zeeguuOrange};
   border-color:  ${colors.buttonBorder} !important;
 
   :hover{
-    background-color: ${colors.lightOrange} !important;
-    color: ${colors.gray};
+    background-color: ${colors.lightOrange};
+    color: ${colors.brown};
   }
 
-  color: ${colors.white};
   height: 45px;
   display: inline-block;
   padding: 5px 45px 5px 45px;
