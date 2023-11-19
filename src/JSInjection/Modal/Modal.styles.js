@@ -139,6 +139,7 @@ export const OverwriteZeeguu = styled.div`
   /** Zeeguu Reader **/
   z-tag:hover {
     color: ${colors.translationHover} !important;
+    background-color: ${colors.lightOrange};
   }
   .article-container z-tag {
     font-size: 1.2em !important;
