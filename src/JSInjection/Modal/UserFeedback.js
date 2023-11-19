@@ -76,7 +76,7 @@ const UserFeedback = ({ api, articleId, url }) => {
                 onChange={handleChange}
                 margin="normal"
                 size="small"
-                error={!feedback.trim()}
+                helperText={!feedback.trim() ? "Empty message" : ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
