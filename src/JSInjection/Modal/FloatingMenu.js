@@ -5,6 +5,7 @@ import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import colors from "../colors";
 
 const FloatingMenu = ({ buttons, buttonGroupVisible, toggleButtonGroup }) => (
   <div sx={{ zIndex: 4 }}>
@@ -15,7 +16,20 @@ const FloatingMenu = ({ buttons, buttonGroupVisible, toggleButtonGroup }) => (
         </ButtonGroup>
       )}
       <div display="flex" float="left">
-        <Fab sx={{ margin: "10px" }} color="primary" aria-label="add" position="fixed" onClick={toggleButtonGroup}>
+        <Fab
+          sx={{
+            margin: "10px",
+            backgroundColor: colors.darkBlue,
+            '&:hover': {
+              backgroundColor: colors.lighterBlue,
+              color: colors.darkGray,
+            },
+          }}
+          color="primary"
+          aria-label="add"
+          position="fixed"
+          onClick={toggleButtonGroup}
+        >
           {buttonGroupVisible ? <CloseSharpIcon /> : <AddIcon />}
         </Fab>
       </div>

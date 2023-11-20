@@ -1,12 +1,7 @@
 /*global chrome*/
 import { useState, useEffect, useRef } from "react";
 
-import {
-  StyledModal,
-  StyledHeading,
-  GlobalStyle,
-  OverwriteZeeguu,
-} from "./Modal.styles";
+import { StyledModal,StyledHeading, GlobalStyle, OverwriteZeeguu,} from "./Modal.styles";
 
 import { StyledCloseButton } from "./Buttons.styles";
 import FloatingMenu from './FloatingMenu';
