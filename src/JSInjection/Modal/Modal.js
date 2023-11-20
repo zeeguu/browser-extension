@@ -24,14 +24,11 @@ import { cleanDOMAfter, getHTMLContent } from "../Cleaning/pageSpecificClean";
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import SaveToZeeguu from "./SaveToZeeguu";
 import colors from "../colors";
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import {SpeechContext} from "../../zeeguu-react/src/exercises/SpeechContext";
 import ZeeguuSpeech from "../../zeeguu-react/src/speech/ZeeguuSpeech";
+import FloatingMenu from './FloatingMenu';
 
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import SettingsIcon from '@mui/icons-material/Settings';
 export function Modal({
   title,
@@ -175,8 +172,6 @@ export function Modal({
       setSpeechEngine(se);
 
     }
-
-
 
     cleanDOMAfter(url);
   }, [articleInfo]);
@@ -332,19 +327,7 @@ export function Modal({
       </StyledModal>  
       </SpeechContext.Provider>      
     </div>
-    <div sx={{zIndex: 4}}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', float: 'right', right: '3em', bottom: '7em', overflow: 'hidden', width: "17em", position: 'absolute' }}>
-               {buttonGroupVisible && (
-                <ButtonGroup sx={{ zIndex: 4, boxShadow: 0 }} orientation="vertical" aria-label="vertical contained button group" variant="contained">
-                  {buttons}
-                </ButtonGroup>)}
-                <div display= "flex" float= "left">
-                  <Fab sx={{margin: "10px"}} color="primary" aria-label="add" position="fixed" onClick={toggleButtonGroup}>
-                      {buttonGroupVisible ? <CloseSharpIcon /> : <AddIcon />}
-                  </Fab>
-                </div>
-        </Box> 
-    </div>
+    <FloatingMenu buttons={buttons} buttonGroupVisible={buttonGroupVisible} toggleButtonGroup={toggleButtonGroup} />
     </>
   );
 }

@@ -56,7 +56,6 @@ export default function PopupContent({
         <>
           {<h1>Oh no!</h1>}
           {<p>{feedback}</p>}{<br/>}
-
           {!feedbackSent && (
             <Button
               variant="text"
