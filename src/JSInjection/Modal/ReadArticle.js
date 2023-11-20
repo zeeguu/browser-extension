@@ -8,6 +8,7 @@ import {
 } from "../constants";
 import ReviewVocabulary from "./ReviewVocabulary";
 import DifficultyFeedbackBox from "../../zeeguu-react/src/reader/DifficultyFeedbackBox";
+import { colors } from "@mui/material";
 
 export function ReadArticle({
   articleId,
@@ -41,7 +42,7 @@ export function ReadArticle({
           />
         </h1>
         <p className="author">{author}</p>
-        <hr />
+        <hr/>
         {articleImage === undefined ? null : (
           <img
             id="zeeguuImage"

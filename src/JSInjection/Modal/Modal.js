@@ -282,7 +282,7 @@ export function Modal({
             </div>
             <div style={{ "float": "right", "width": "50%",  "display":"inline"}}>
               <StyledCloseButton role="button" onClick={handleClose} id="qtClose">
-                <CloseSharpIcon/>
+                <CloseSharpIcon sx={{color: colors.gray}}/>
               </StyledCloseButton>
               {readArticleOpen ? (
                 <ToolbarButtons

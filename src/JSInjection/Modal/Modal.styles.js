@@ -70,6 +70,10 @@ export const StyledModal = styled(ReactModal)`
     font-size: 1.3rem !important;
   }
 
+  hr {
+    border-top: 1px solid #F6F6F6;
+  }
+
   p,
   li {
     font-size: 1rem !important;
