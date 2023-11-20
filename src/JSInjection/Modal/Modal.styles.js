@@ -96,11 +96,12 @@ export const StyledModal = styled(ReactModal)`
   }
 
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px ${colors.scrollTrackGray};
+    background: #f1f1f1; 
   }
 
   ::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 6px ${colors.scrollThumbGray};
+    background: ${colors.lighterBlue}; 
+    border-radius: 10px;
   }
 
   #zeeguuImage {
