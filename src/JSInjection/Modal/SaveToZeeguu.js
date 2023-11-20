@@ -8,8 +8,6 @@ import BeenhereIcon from '@mui/icons-material/Beenhere';
 import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
 import Tooltip from '@mui/material/Tooltip';
 
-
-
 export default function SaveToZeeguu({ api, articleId, setPersonalCopySaved, personalCopySaved}) {
   function handlePostCopy() {
     api.makePersonalCopy(articleId, (message) => console.log(message));

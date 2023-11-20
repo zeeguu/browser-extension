@@ -1,15 +1,20 @@
 /*global chrome*/
 import { useState, useEffect, useRef } from "react";
+
 import {
   StyledModal,
   StyledHeading,
   GlobalStyle,
   OverwriteZeeguu,
 } from "./Modal.styles";
-import UserFeedback from "./UserFeedback";
+
 import { StyledCloseButton } from "./Buttons.styles";
+import FloatingMenu from './FloatingMenu';
 import ZeeguuLoader from "../ZeeguuLoader";
+import UserFeedback from "./UserFeedback";
+
 import { EXTENSION_SOURCE } from "../constants";
+
 import { onScroll } from "../../zeeguu-react/src/reader/ArticleReader";
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
@@ -21,15 +26,17 @@ import Exercises from "../../zeeguu-react/src/exercises/Exercises";
 import ToolbarButtons from "./ToolbarButtons";
 import useUILanguage from "../../zeeguu-react/src/assorted/hooks/uiLanguageHook";
 import { cleanDOMAfter, getHTMLContent } from "../Cleaning/pageSpecificClean";
+
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import SaveToZeeguu from "./SaveToZeeguu";
 import colors from "../colors";
+
 import {SpeechContext} from "../../zeeguu-react/src/exercises/SpeechContext";
 import ZeeguuSpeech from "../../zeeguu-react/src/speech/ZeeguuSpeech";
-import FloatingMenu from './FloatingMenu';
 
 import Button from '@mui/material/Button';
 import SettingsIcon from '@mui/icons-material/Settings';
+
 export function Modal({
   title,
   content,

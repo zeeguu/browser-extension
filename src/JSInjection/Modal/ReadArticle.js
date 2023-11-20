@@ -6,11 +6,7 @@ import {
   PARAGRAPH_CONTENT,
   HEADER_CONTENT,
 } from "../constants";
-import { StyledSmallButtonBlue } from "./Buttons.styles";
 import ReviewVocabulary from "./ReviewVocabulary";
-import SaveToZeeguu from "./SaveToZeeguu";
-import UserFeedback from "./UserFeedback";
-
 import DifficultyFeedbackBox from "../../zeeguu-react/src/reader/DifficultyFeedbackBox";
 
 export function ReadArticle({
@@ -27,10 +23,6 @@ export function ReadArticle({
   setPersonalCopySaved,
   personalCopySaved,
 }) {
-  function reportProblem(e) {
-    document.getElementById("feedback-box").scrollIntoView();
-    document.getElementById("textarea-feedback").focus();
-  }
 
   if (articleImage) {
     if (articleImage.src === null) {
@@ -94,14 +86,11 @@ export function ReadArticle({
         })}
 
         <DifficultyFeedbackBox api={api} articleID={articleId} />
-
         <ReviewVocabulary
           articleId={articleId}
           api={api}
           openReview={openReview}
         />
-
-        {/* <UserFeedback api={api} articleId={articleId} url={url} /> */}
       </div>
     </>
   );
