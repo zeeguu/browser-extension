@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { setCurrentURL } from "./functions";
 import sendFeedbackEmail from "../JSInjection/Modal/sendFeedbackEmail";
 import { runningInChromeDesktop } from "../zeeguu-react/src/utils/misc/browserDetection";
-import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 
@@ -32,13 +31,17 @@ export default function PopupContent({
       func: setCurrentURL(tab.url),
     };
 
-    if (runningInChromeDesktop()) {
-      chrome.scripting.executeScript(executeScriptOptions);
-    } else {
-      browser.tabs.executeScript(tab.id, { file: "./main.js" }, setCurrentURL(tab.url));
+    try {
+      if (runningInChromeDesktop()) {
+        await chrome.scripting.executeScript(executeScriptOptions);
+      } else {
+        await browser.tabs.executeScript(tab.id, { file: "./main.js" }, setCurrentURL(tab.url));
+      }
+      window.close();
+    } catch (error) {
+      console.error("Error occurred:", error);
+      setModalError(true);
     }
-
-    window.close();
   };
 
   const sendFeedbackHandler = (feedback, feedbackType) => {
@@ -50,24 +53,9 @@ export default function PopupContent({
 
   const renderFeedbackSection = (feedback, feedbackType, buttonLabel) => (
     <>
-      {feedbackSuccess ? (
-        <Alert severity="success">Thanks for the feedback</Alert>
-      ) : (
-        <>
           {<h1>Oh no!</h1>}
           {<p>{feedback}</p>}{<br/>}
-          {!feedbackSent && (
-            <Button
-              variant="text"
-              size="small"
-              endIcon={<WarningOutlinedIcon />}
-              onClick={() => sendFeedbackHandler(feedback, feedbackType)}
-            >
-              {buttonLabel}
-            </Button>
-          )}
-        </>
-      )}
+          {!feedbackSent && sendFeedbackHandler(feedback, feedbackType)}
     </>
   );
 
