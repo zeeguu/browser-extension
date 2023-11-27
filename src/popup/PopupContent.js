@@ -5,12 +5,17 @@ import { runningInChromeDesktop } from "../zeeguu-react/src/utils/misc/browserDe
 import { HeadingContainer, MiddleContainer } from "./Popup.styles";
 import logo from "../images/zeeguu128.png";
 import PopupLoading from "./PopupLoading";
+import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
+import colors from "../JSInjection/colors";
 
 export default function PopupContent({isReadable, languageSupported, user, tab, api, sessionId,}) {
   const LANGUAGE_FEEDBACK = "This language is not supported yet";
   const LANGUAGE_UNDEFINED = "Language support information is unavailable";
   const READABILITY_FEEDBACK = "This text is not readable";
 
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const [feedbackSuccess, setFeedbackSuccess] = useState(false);
   const [finalStateExecuted, setFinalStateExecuted] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
 
@@ -59,21 +64,43 @@ export default function PopupContent({isReadable, languageSupported, user, tab, 
     window.close();
   }
 
-  function sendFeedback(feedback, feedbackType) {
+  const sendFeedback = (feedback, feedbackType) => {
     api.session = sessionId;
     sendFeedbackEmail(api, feedback, tab.url, undefined, feedbackType);
+    setFeedbackSent(true);
+    setFeedbackSuccess(true);
   }
 
   const renderFeedbackSection = (feedback, feedbackType) => (
-    <>
-      {<HeadingContainer>
-        <img src={logo} alt="Zeeguu logo" />
-      </HeadingContainer>}
-      {<MiddleContainer>
-        {user && <h1>Oh no, {user.name}!</h1>}
-        <p>{feedback}</p>
-        {sendFeedback(feedback, feedbackType)}
-      </MiddleContainer>}
+    <> {feedbackSuccess ? (
+        <>
+           <HeadingContainer>
+            <img src={logo} alt="Zeeguu logo" />
+          </HeadingContainer>
+          <MiddleContainer>
+            <Alert severity="success">Thanks for the feedback</Alert>
+          </MiddleContainer>
+        </>
+        ) : (
+        <>
+          {<HeadingContainer>
+            <img src={logo} alt="Zeeguu logo" />
+          </HeadingContainer>}
+          {<MiddleContainer>
+            {user && <h1>Oh no, {user.name}!</h1>}
+            <p>{feedback}</p><br/>
+            {!feedbackSent && (
+            <Link style={{ textTransform: 'none', color:`${colors.darkBlue}`}}
+              component="button"
+              underline="always"
+              onClick={() => sendFeedback(feedback, feedbackType)}
+            >
+              {'Report issue'}
+            </Link>
+          )}
+          </MiddleContainer>}
+        </>
+        )}
     </>
   );
 
