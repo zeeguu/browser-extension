@@ -308,12 +308,15 @@ export function Modal({
                     <br />
                     <span>Home</span>
                   </StyledSmallButton>
-                  <SaveToZeeguu
-                    api={api}
-                    articleId={articleId()}
-                    setPersonalCopySaved={setPersonalCopySaved}
-                    personalCopySaved={personalCopySaved}
-                  />
+                  {!reviewOpen && !exerciseOpen && (
+                    <SaveToZeeguu
+                      api={api}
+                      articleId={articleId()}
+                      setPersonalCopySaved={setPersonalCopySaved}
+                      personalCopySaved={personalCopySaved}
+                    />
+                  )}
+
                   <div>
                     <StyledSmallButton
                       onMouseEnter={() => setIsHovered(true)}
