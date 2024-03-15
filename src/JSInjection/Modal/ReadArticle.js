@@ -114,7 +114,7 @@ export function ReadArticle({
                 justifyContent: "center",
                 textAlign: "center",
               }}>
-              {"Help us make Zeeguu even smarter by answering these questions."}
+              {"Zeeguu can make better personalized recommendations based on your feedback."}
             </h4>
             <LikeFeedbackBox
               api={api}
