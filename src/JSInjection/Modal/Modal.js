@@ -55,6 +55,8 @@ export function Modal({
   const [readArticleOpen, setReadArticleOpen] = useState(true);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [exerciseOpen, setExerciseOpen] = useState(false);
+  const [answerSubmitted, setAnswerSubmitted] = useState(false);
+
 
   const [translating, setTranslating] = useState(true);
   const [pronouncing, setPronouncing] = useState(true);
@@ -434,6 +436,8 @@ export function Modal({
                   personalCopySaved={personalCopySaved}
                   articleInfo={articleInfo}
                   setArticleInfo={setArticleInfo}
+                  answerSubmitted={answerSubmitted}
+                  setAnswerSubmitted={setAnswerSubmitted}
                 />
               )}
 

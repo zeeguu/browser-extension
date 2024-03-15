@@ -6,10 +6,12 @@ import {
   PARAGRAPH_CONTENT,
   HEADER_CONTENT,
 } from "../constants";
-import { StyledBox } from "./Modal.styles";
+import { InvisibleBox, StyledBox } from "./Modal.styles";
 import ReviewVocabulary from "./ReviewVocabulary";
 import LikeFeedbackBox from "../../zeeguu-react/src/reader/LikeFeedbackBox";
 import DifficultyFeedbackBox from "../../zeeguu-react/src/reader/DifficultyFeedbackBox";
+import { random } from "../../zeeguu-react/src/utils/basic/arrays";
+
 import { colors } from "@mui/material";
 
 export function ReadArticle({
@@ -27,12 +29,17 @@ export function ReadArticle({
   personalCopySaved,
   articleInfo,
   setArticleInfo,
+  answerSubmitted,
+  setAnswerSubmitted,
 }) {
   if (articleImage) {
     if (articleImage.src === null) {
       articleImage = undefined;
     }
   }
+
+  
+ 
 
   return (
     <>
@@ -115,8 +122,20 @@ export function ReadArticle({
               articleInfo={articleInfo}
               setArticleInfo={setArticleInfo}
               source={EXTENSION_SOURCE}
+              setAnswerSubmitted={setAnswerSubmitted}
             />
-            <DifficultyFeedbackBox api={api} articleID={articleId} />
+            <DifficultyFeedbackBox 
+              api={api} 
+              articleID={articleId} 
+              articleInfo={articleInfo}
+              setArticleInfo={setArticleInfo}
+              setAnswerSubmitted={setAnswerSubmitted} 
+            />
+            {answerSubmitted && (
+                <InvisibleBox>
+                <h3 align="center">Thank You {random(["🤗", "🙏", "😊", "🎉"])}</h3>
+              </InvisibleBox>
+            )} 
           </StyledBox>
         </div>
       </div>
