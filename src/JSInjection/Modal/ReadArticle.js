@@ -108,14 +108,18 @@ export function ReadArticle({
             openReview={openReview}
           />
           <StyledBox>
-            <h4
+            <div
               style={{
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
-              }}>
-              {"Zeeguu can make better personalized recommendations based on your feedback."}
-            </h4>
+                paddingRight: "2em",
+                paddingLeft: "2em",
+                color: "#333333",
+              }}
+            >
+              Zeeguu can make better personalized recommendations based on your feedback.
+            </div>
             <LikeFeedbackBox
               api={api}
               articleID={articleId}
