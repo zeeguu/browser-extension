@@ -122,7 +122,6 @@ export function ReadArticle({
             </div>
             <LikeFeedbackBox
               api={api}
-              articleID={articleId}
               articleInfo={articleInfo}
               setArticleInfo={setArticleInfo}
               source={EXTENSION_SOURCE}
@@ -130,10 +129,10 @@ export function ReadArticle({
             />
             <DifficultyFeedbackBox 
               api={api} 
-              articleID={articleId} 
               articleInfo={articleInfo}
               setArticleInfo={setArticleInfo}
               setAnswerSubmitted={setAnswerSubmitted} 
+              source={EXTENSION_SOURCE}
             />
             {answerSubmitted && (
                 <InvisibleBox>
