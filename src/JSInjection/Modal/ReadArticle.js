@@ -124,8 +124,8 @@ export function ReadArticle({
               api={api}
               articleInfo={articleInfo}
               setArticleInfo={setArticleInfo}
-              source={EXTENSION_SOURCE}
               setAnswerSubmitted={setAnswerSubmitted}
+              source={EXTENSION_SOURCE}
             />
             <DifficultyFeedbackBox 
               api={api} 
