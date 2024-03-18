@@ -28,9 +28,9 @@ export function ReadArticle({
   setPersonalCopySaved,
   personalCopySaved,
   articleInfo,
-  setArticleInfo,
+  setLikedState,
+  updateArticleDifficultyFeedback,
   answerSubmitted,
-  setAnswerSubmitted,
 }) {
   if (articleImage) {
     if (articleImage.src === null) {
@@ -121,18 +121,12 @@ export function ReadArticle({
               Zeeguu can make better personalized recommendations based on your feedback.
             </div>
             <LikeFeedbackBox
-              api={api}
               articleInfo={articleInfo}
-              setArticleInfo={setArticleInfo}
-              setAnswerSubmitted={setAnswerSubmitted}
-              source={EXTENSION_SOURCE}
+              setLikedState={setLikedState}
             />
             <DifficultyFeedbackBox 
-              api={api} 
               articleInfo={articleInfo}
-              setArticleInfo={setArticleInfo}
-              setAnswerSubmitted={setAnswerSubmitted} 
-              source={EXTENSION_SOURCE}
+              updateArticleDifficultyFeedback={updateArticleDifficultyFeedback}
             />
             {answerSubmitted && (
                 <InvisibleBox>

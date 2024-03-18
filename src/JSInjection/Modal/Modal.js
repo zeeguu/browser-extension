@@ -331,6 +331,27 @@ export function Modal({
     setLogContext("ARTICLE");
   }
 
+  const setLikedState = (state) => {
+    let newArticleInfo = { ...articleInfo, liked: state };
+    api.setArticleInfo(newArticleInfo, () => {
+      setAnswerSubmitted(true);
+      setArticleInfo(newArticleInfo);
+    });
+    api.logReaderActivity(api.LIKE_ARTICLE, articleInfo.id, state, EXTENSION_SOURCE);
+  };
+
+  const updateArticleDifficultyFeedback = (answer) => {
+    let newArticleInfo = { ...articleInfo, relative_difficulty: answer};
+    api.submitArticleDifficultyFeedback(
+      { article_id: articleInfo.id, difficulty: answer },
+      () => {
+        setAnswerSubmitted(true);
+        setArticleInfo(newArticleInfo);
+      }
+    );
+    api.logReaderActivity(api.DIFFICULTY_FEEDBACK, articleInfo.id, answer, EXTENSION_SOURCE);
+  };
+
   if (interactiveTextArray === undefined || loadingPersonalCopy) {
     return <ZeeguuLoader />;
   }
@@ -435,9 +456,9 @@ export function Modal({
                   setPersonalCopySaved={setPersonalCopySaved}
                   personalCopySaved={personalCopySaved}
                   articleInfo={articleInfo}
-                  setArticleInfo={setArticleInfo}
+                  setLikedState={setLikedState}
+                  updateArticleDifficultyFeedback={updateArticleDifficultyFeedback}
                   answerSubmitted={answerSubmitted}
-                  setAnswerSubmitted={setAnswerSubmitted}
                 />
               )}
 
