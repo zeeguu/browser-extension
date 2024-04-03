@@ -27,6 +27,12 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://*.zeeguu.org/*"],
+      "js": ["injectOnZeeguuOrg.js"]
+    }
+  ],
   "externally_connectable": {
     "matches": ["*://*.zeeguu.org/*"]
   },
