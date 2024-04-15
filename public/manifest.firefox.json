@@ -37,7 +37,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.zeeguu.org/*", "*://localhost/*"],
+      "matches": ["*://*.zeeguu.org/*"],
       "js": ["injectOnZeeguuOrg.js"]
     }
   ],

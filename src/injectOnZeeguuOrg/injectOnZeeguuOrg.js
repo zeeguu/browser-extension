@@ -11,7 +11,7 @@ window.addEventListener("message", function (event) {
     window.postMessage(
       {
         message: "EXTENSION_CONFIRMATION_RESPONSE",
-        source: "ZEEGUU_INJECTED_CODE",
+        source: "ZEEGUU_READER_INJECTED_CODE",
       },
       "*"
     );
