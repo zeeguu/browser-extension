@@ -1,4 +1,3 @@
-/*global chrome*/
 import { BROWSER_API } from "../utils/browserApi";
 
 export function isLoggedIn(cookieUrl) {
@@ -7,13 +6,13 @@ export function isLoggedIn(cookieUrl) {
     function (cookie) {
       if (cookie) {
         BROWSER_API.storage.local.set({ loggedIn: true }, () =>
-          console.log(cookieUrl, "User already is logged in")
+          console.log(cookieUrl, "User already is logged in"),
         );
       } else {
         console.log(cookieUrl, "No cookie");
         BROWSER_API.storage.local.set({ loggedIn: false });
       }
-    }
+    },
   );
 }
 
@@ -32,7 +31,7 @@ export function getUserInfo(cookieUrl, setUser) {
           native_language: cookie.value,
         }));
       }
-    }
+    },
   );
   BROWSER_API.cookies.get({ url: cookieUrl, name: "sessionID" }, (cookie) => {
     if (cookie) {
@@ -55,7 +54,7 @@ export async function getIsLoggedIn(cookieUrl) {
     return false;
   } else {
     BROWSER_API.storage.local.set({ loggedIn: true }, () =>
-      console.log(cookieUrl, "User already is logged in")
+      console.log(cookieUrl, "User already is logged in"),
     );
     return true;
   }
@@ -63,7 +62,6 @@ export async function getIsLoggedIn(cookieUrl) {
 
 export async function getUserInfoDictFromCookies(cookieUrl) {
   console.log("Getting user info");
-  console.log(`Using the following url: ${cookieUrl}`);
   let userInfoDict = { name: "", native_language: "", session: "" };
   userInfoDict.name = (
     await BROWSER_API.cookies.get({
@@ -83,20 +81,6 @@ export async function getUserInfoDictFromCookies(cookieUrl) {
       name: "sessionID",
     })
   ).value;
-  userInfoDict.translateWords =
-    (
-      await BROWSER_API.cookies.get({
-        url: cookieUrl,
-        name: "translateWords",
-      })
-    ).value === "true";
-  userInfoDict.pronounceWords =
-    (
-      await BROWSER_API.cookies.get({
-        url: cookieUrl,
-        name: "pronounceWords",
-      })
-    ).value === "true";
   return userInfoDict;
 }
 
@@ -104,26 +88,26 @@ export function saveCookiesOnZeeguu(userInfo, session, url) {
   let stringSession = String(session);
   BROWSER_API.cookies.set(
     { name: "sessionID", url: url, value: stringSession },
-    (cookie) => console.log("sessionID cookie saved:", cookie)
+    (cookie) => console.log("sessionID cookie saved:", cookie),
   );
   BROWSER_API.cookies.set(
     { name: "name", url: url, value: userInfo.name },
-    (cookie) => console.log("name cookie saved:", cookie)
+    (cookie) => console.log("name cookie saved:", cookie),
   );
   BROWSER_API.cookies.set(
     { name: "nativeLanguage", url: url, value: userInfo.native_language },
-    () => console.log("nativeLanaguage cookie saved")
+    () => console.log("nativeLanaguage cookie saved"),
   );
 }
 
 export function removeCookiesOnZeeguu(cookieUrl) {
   BROWSER_API.cookies.remove({ url: cookieUrl, name: "sessionID" }, () =>
-    console.log("sessionID cookie removed")
+    console.log("sessionID cookie removed"),
   );
   BROWSER_API.cookies.remove({ url: cookieUrl, name: "name" }, () =>
-    console.log("name cookie removed")
+    console.log("name cookie removed"),
   );
   BROWSER_API.cookies.remove({ url: cookieUrl, name: "nativeLanguage" }, () =>
-    console.log("nativeLanguage cookie removed")
+    console.log("nativeLanguage cookie removed"),
   );
 }

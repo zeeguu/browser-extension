@@ -18,12 +18,7 @@ import { EXTENSION_SOURCE } from "../constants";
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
 import { interactiveTextsWithTags } from "./interactiveTextsWithTags";
-import {
-  getNativeLanguage,
-  getPronounceWords,
-  getTranslateWords,
-  getUsername,
-} from "../../popup/functions";
+import { getNativeLanguage, getUsername } from "../../popup/functions";
 import { ReadArticle } from "./ReadArticle";
 import WordsForArticleModal from "./WordsForArticleModal";
 import ToolbarButtons from "./ToolbarButtons";
