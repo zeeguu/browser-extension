@@ -48,10 +48,7 @@ import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ZeeguuError from "../ZeeguuError";
 import { WEB_URL } from "../../config.js";
-import {
-  setPronounceWordsIntoCookies,
-  setTranslateWordsIntoCookies,
-} from "../../zeeguu-react/src/utils/cookies/userInfo.js";
+import useUserPreferences from "../../zeeguu-react/src/hooks/useUserPreferences.js";
 
 export function Modal({
   title,
@@ -67,9 +64,12 @@ export function Modal({
   const [exerciseOpen, setExerciseOpen] = useState(false);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [isTimedOut, setIsTimedOut] = useState();
-
-  const [translating, setTranslating] = useState(true);
-  const [pronouncing, setPronouncing] = useState(true);
+  const {
+    translateInReader,
+    pronounceInReader,
+    updateTranslateInReader,
+    updatePronounceInReader,
+  } = useUserPreferences(api);
 
   const [articleInfo, setArticleInfo] = useState();
   const [interactiveTextArray, setInteractiveTextArray] = useState();
@@ -191,15 +191,6 @@ export function Modal({
       EXTENSION_SOURCE
     );
   }
-
-  useEffect(() => {
-    setTranslateWordsIntoCookies(translating);
-  }, [translating]);
-
-  useEffect(() => {
-    setPronounceWordsIntoCookies(pronouncing);
-  }, [pronouncing]);
-
   useEffect(() => {
     const timedOutTimer = setTimeout(() => {
       setIsTimedOut(true);
@@ -260,8 +251,6 @@ export function Modal({
     }
     getNativeLanguage().then((result) => setNativeLang(result));
     getUsername().then((result) => setUsername(result));
-    getTranslateWords().then((result) => setTranslating(result));
-    getPronounceWords().then((result) => setPronouncing(result));
     setarticleImage(getMainImage(getHTMLContent(url), url));
 
     window.addEventListener("focus", logFocus);
@@ -450,10 +439,10 @@ export function Modal({
                   </StyledCloseButton>
                   {readArticleOpen ? (
                     <ToolbarButtons
-                      translating={translating}
-                      pronouncing={pronouncing}
-                      setTranslating={setTranslating}
-                      setPronouncing={setPronouncing}
+                      translating={translateInReader}
+                      pronouncing={pronounceInReader}
+                      setTranslating={updateTranslateInReader}
+                      setPronouncing={updatePronounceInReader}
                     />
                   ) : null}
                 </div>
@@ -468,8 +457,8 @@ export function Modal({
                   interactiveTitle={interactiveTitle}
                   articleImage={articleImage}
                   openReview={openReview}
-                  translating={translating}
-                  pronouncing={pronouncing}
+                  translating={translateInReader}
+                  pronouncing={pronounceInReader}
                   url={url}
                   setPersonalCopySaved={setPersonalCopySaved}
                   personalCopySaved={personalCopySaved}
