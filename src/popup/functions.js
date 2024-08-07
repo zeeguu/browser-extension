@@ -21,6 +21,17 @@ export async function getNativeLanguage() {
   return value.userInfo.native_language;
 }
 
+export async function getTranslateWords() {
+  const value = await BROWSER_API.storage.local.get("userInfo");
+  console.log(value);
+  return value.userInfo.translateWords;
+}
+
+export async function getPronounceWords() {
+  const value = await BROWSER_API.storage.local.get("userInfo");
+  return value.userInfo.pronounceWords;
+}
+
 export async function getUsername() {
   const value = await BROWSER_API.storage.local.get("userInfo");
   return value.userInfo.name;

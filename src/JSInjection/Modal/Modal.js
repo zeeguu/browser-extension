@@ -18,7 +18,12 @@ import { EXTENSION_SOURCE } from "../constants";
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
 import { interactiveTextsWithTags } from "./interactiveTextsWithTags";
-import { getNativeLanguage, getUsername } from "../../popup/functions";
+import {
+  getNativeLanguage,
+  getPronounceWords,
+  getTranslateWords,
+  getUsername,
+} from "../../popup/functions";
 import { ReadArticle } from "./ReadArticle";
 import WordsForArticleModal from "./WordsForArticleModal";
 import ToolbarButtons from "./ToolbarButtons";
@@ -43,6 +48,10 @@ import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ZeeguuError from "../ZeeguuError";
 import { WEB_URL } from "../../config.js";
+import {
+  setPronounceWordsIntoCookies,
+  setTranslateWordsIntoCookies,
+} from "../../zeeguu-react/src/utils/cookies/userInfo.js";
 
 export function Modal({
   title,
@@ -184,6 +193,14 @@ export function Modal({
   }
 
   useEffect(() => {
+    setTranslateWordsIntoCookies(translating);
+  }, [translating]);
+
+  useEffect(() => {
+    setPronounceWordsIntoCookies(pronouncing);
+  }, [pronouncing]);
+
+  useEffect(() => {
     const timedOutTimer = setTimeout(() => {
       setIsTimedOut(true);
     }, 10000);
@@ -243,6 +260,8 @@ export function Modal({
     }
     getNativeLanguage().then((result) => setNativeLang(result));
     getUsername().then((result) => setUsername(result));
+    getTranslateWords().then((result) => setTranslating(result));
+    getPronounceWords().then((result) => setPronouncing(result));
     setarticleImage(getMainImage(getHTMLContent(url), url));
 
     window.addEventListener("focus", logFocus);

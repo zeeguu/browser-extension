@@ -13,7 +13,7 @@ BROWSER_API.runtime.onMessageExternal.addListener(
   (request, sender, sendResponse) => {
     console.log("Received message from " + sender.url + ": ", request);
     sendResponse({ message: true });
-  },
+  }
 );
 
 BROWSER_API.runtime.onInstalled.addListener(function (object) {
@@ -68,7 +68,7 @@ async function startReader() {
         api.OPEN_CONTEXT,
         "",
         tab.url,
-        EXTENSION_SOURCE,
+        EXTENSION_SOURCE
       );
     } catch (err) {
       console.error(`failed to execute script: ${err}`);
