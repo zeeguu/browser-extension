@@ -17,7 +17,8 @@ export default function sendFeedbackEmail(
   feedback,
   url,
   articleId,
-  feedbackType
+  feedbackType,
+  confirmSuccess
 ) {
   let feedbackInfo = feedback + " and url is:" + url;
   let feedbackForDB = feedbackType + feedbackInfo.replace(/ /g, "_");
@@ -39,17 +40,19 @@ export default function sendFeedbackEmail(
       feedbackForEmail,
       (result_dict) => {
         console.log("Feedback sent successfully");
-        return true;
+        if (confirmSuccess)
+          if (result_dict === "OK") confirmSuccess(true);
+          else confirmSuccess(false);
       },
       (error) => {
         console.log("Something went wrong.");
         console.error("Error sending feedback:", error);
-        return false;
+        if (confirmSuccess) confirmSuccess(false);
       }
     );
   } catch (error) {
     console.log("Wasn't able to send feedback, error ocurred.");
     console.error(error);
-    return false;
+    if (confirmSuccess) confirmSuccess(false);
   }
 }

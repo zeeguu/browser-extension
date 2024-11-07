@@ -22,9 +22,10 @@ export default function ReportError({
     if (feedback === LANGUAGE_FEEDBACK || feedback === LANGUAGE_UNDEFINED)
       feedbackType = "LANGUAGE_";
     else if (feedback === READABILITY_FEEDBACK) feedbackType = "READABLE_";
-    let result = sendFeedbackEmail(api, feedback, url, undefined, feedbackType);
-    setFeedbackSuccess(result);
-    setFeedbackSent(true);
+    sendFeedbackEmail(api, feedback, url, undefined, feedbackType, (result) => {
+      setFeedbackSuccess(result);
+      setFeedbackSent(true);
+    });
   };
   return (
     <>
