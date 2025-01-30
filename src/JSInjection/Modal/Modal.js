@@ -19,7 +19,6 @@ import { EXTENSION_SOURCE } from "../constants";
 
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
-import { interactiveTextsWithTags } from "./interactiveTextsWithTags";
 import { getNativeLanguage, getUsername } from "../../popup/functions";
 import { ReadArticle } from "./ReadArticle";
 import WordsForArticleModal from "./WordsForArticleModal";
@@ -44,7 +43,6 @@ import DigitalTimer from "../../zeeguu-react/src/components/DigitalTimer";
 import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ZeeguuError from "../ZeeguuError";
-import { WEB_URL } from "../../config.js";
 import useUserPreferences from "../../zeeguu-react/src/hooks/useUserPreferences.js";
 
 export function Modal({
@@ -68,8 +66,10 @@ export function Modal({
     updatePronounceInReader,
   } = useUserPreferences(api);
 
+  const [articleID, setArticleID] = useState(null);
   const [articleInfo, setArticleInfo] = useState();
-  const [interactiveTextArray, setInteractiveTextArray] = useState();
+  const [articleTopics, setArticleTopics] = useState([]);
+  const [interactiveText, setInteractiveText] = useState();
   const [interactiveTitle, setInteractiveTitle] = useState();
   const [nativeLang, setNativeLang] = useState();
   const [username, setUsername] = useState();
@@ -78,13 +78,12 @@ export function Modal({
   const [loadingPersonalCopy, setLoadingPersonalCopy] = useState(true);
   const [personalCopySaved, setPersonalCopySaved] = useState(false);
   const [articleImage, setarticleImage] = useState();
+  const [bookmarks, setBookmarks] = useState([]);
 
   const [logContext, setLogContext] = useState("ARTICLE");
   const logContextRef = useRef({});
 
   logContextRef.current = logContext;
-  const articleInfoRef = useRef({});
-  articleInfoRef.current = articleInfo;
 
   const [activeSessionDuration, clockActive] = useActivityTimer(uploadActivity);
   const [readingSessionId, setReadingSessionId] = useState();
@@ -100,6 +99,13 @@ export function Modal({
       );
   }
 
+  function updateBookmark() {
+    if (articleInfo)
+      api.bookmarksForArticle(articleInfo.id, (bookmarks) => {
+        setBookmarks(bookmarks);
+      });
+  }
+
   const [scrollPosition, setScrollPosition] = useState();
   const scrollEvents = useRef();
   const lastSampleScroll = useRef();
@@ -110,7 +116,7 @@ export function Modal({
   };
 
   const buttons = [
-    <UserFeedback api={api} articleId={articleId} url={url} />,
+    <UserFeedback api={api} articleId={articleID} url={url} />,
     <Button
       style={{
         textTransform: "none",
@@ -135,10 +141,6 @@ export function Modal({
   const [speechEngine, setSpeechEngine] = useState();
 
   useUILanguage();
-
-  function articleId() {
-    return articleInfoRef.current.id;
-  }
 
   function getScrollRatio() {
     let scrollElement = document.getElementById("scrollHolder");
@@ -174,7 +176,7 @@ export function Modal({
   function logFocus() {
     api.logReaderActivity(
       logContextRef.current + " FOCUSED",
-      articleId(),
+      articleID,
       "",
       EXTENSION_SOURCE
     );
@@ -183,15 +185,22 @@ export function Modal({
   function logBlur() {
     api.logReaderActivity(
       logContextRef.current + " LOST FOCUS",
-      articleId(),
+      articleID,
       "",
       EXTENSION_SOURCE
     );
   }
   useEffect(() => {
+    api.getOwnTexts((articles) => {
+      checkOwnTexts(articles);
+      setLoadingPersonalCopy(false);
+    });
+  }, [articleID]);
+
+  useEffect(() => {
     const timedOutTimer = setTimeout(() => {
       setIsTimedOut(true);
-    }, 10000);
+    }, 15000);
     scrollEvents.current = [];
     lastSampleScroll.current = 0;
     setScrollPosition(0);
@@ -207,42 +216,54 @@ export function Modal({
           return alert("not readable");
         }
         let artinfo = JSON.parse(result_dict);
-        console.log("ARTICLE INFO in the Modal JS constructore...: ");
+        console.log("Created Article in the Modal JS constructore...: ");
         console.dir(artinfo);
         setArticleInfo(artinfo);
+        let articleTopics = artinfo.topics_list.map((x) => x[0]);
+        setArticleTopics(articleTopics);
         let engine = new ZeeguuSpeech(api, artinfo.language);
         setSpeechEngine(engine);
-        let arrInteractive = interactiveTextsWithTags(
-          content,
-          artinfo,
-          engine,
-          api
-        );
-        setInteractiveTextArray(arrInteractive);
-
-        let itTitle = new InteractiveText(
-          title,
-          artinfo,
-          api,
-          api.TRANSLATE_TEXT,
-          EXTENSION_SOURCE,
-          engine
-        );
-        setInteractiveTitle(itTitle);
-        api.getOwnTexts((articles) => {
-          checkOwnTexts(articles);
-          setLoadingPersonalCopy(false);
-        });
-        api.readingSessionCreate(artinfo.id, (sessionID) => {
-          setReadingSessionId(sessionID);
-          api.setArticleOpened(artinfo.id);
-          api.logReaderActivity(
-            api.OPEN_ARTICLE,
-            artinfo.id,
-            sessionID,
-            EXTENSION_SOURCE
+        api.getArticleInfo(artinfo.id, (articleData) => {
+          console.log("Got Article Info in the Modal JS constructore...: ");
+          setArticleID(artinfo.id);
+          setInteractiveText(
+            new InteractiveText(
+              articleData.tokenized_paragraphs,
+              articleData.id,
+              true,
+              api,
+              articleData.translations,
+              api.TRANSLATE_TEXT,
+              articleData.language,
+              EXTENSION_SOURCE,
+              engine
+            )
           );
-          clearTimeout(timedOutTimer);
+          let itTitle = new InteractiveText(
+            articleData.tokenized_title,
+            articleData.id,
+            false,
+            api,
+            articleData.translations,
+            api.TRANSLATE_TEXT,
+            articleData.language,
+            EXTENSION_SOURCE,
+            engine
+          );
+          setInteractiveTitle(itTitle);
+          setBookmarks(articleData.translations);
+          console.log("Creating reading session");
+          api.readingSessionCreate(articleData.id, (sessionID) => {
+            setReadingSessionId(sessionID);
+            api.setArticleOpened(articleData.id);
+            api.logReaderActivity(
+              api.OPEN_ARTICLE,
+              articleData.id,
+              sessionID,
+              EXTENSION_SOURCE
+            );
+            clearTimeout(timedOutTimer);
+          });
         });
       });
     }
@@ -270,17 +291,12 @@ export function Modal({
     uploadActivity();
     api.logReaderActivity(
       api.SCROLL,
-      articleId(),
+      articleID,
       scrollEvents.current.length,
       JSON.stringify(scrollEvents.current).slice(0, 4096),
       EXTENSION_SOURCE
     );
-    api.logReaderActivity(
-      api.ARTICLE_CLOSED,
-      articleId(),
-      "",
-      EXTENSION_SOURCE
-    );
+    api.logReaderActivity(api.ARTICLE_CLOSED, articleID, "", EXTENSION_SOURCE);
     window.removeEventListener("focus", logFocus);
     window.removeEventListener("blur", logBlur);
     window.removeEventListener("scroll", handleScroll, true);
@@ -294,7 +310,7 @@ export function Modal({
   function checkOwnTexts(articles) {
     if (articles.length !== 0) {
       for (var i = 0; i < articles.length; i++) {
-        if (articles[i].id === articleId()) {
+        if (articles[i].id === articleID) {
           setPersonalCopySaved(true);
           break;
         }
@@ -307,10 +323,6 @@ export function Modal({
     setReviewOpen(true);
     setReadArticleOpen(false);
     setExerciseOpen(false);
-  }
-
-  function openExercises() {
-    window.open(`${WEB_URL}/exercises/forArticle/${articleId()}`);
   }
 
   function openArticle() {
@@ -352,7 +364,7 @@ export function Modal({
   };
 
   if (
-    (interactiveTextArray === undefined || loadingPersonalCopy) &&
+    (interactiveText === undefined || loadingPersonalCopy) &&
     isTimedOut === undefined
   ) {
     return <ZeeguuLoader />;
@@ -391,7 +403,7 @@ export function Modal({
                     </StyledSmallButton>
                     <SaveToZeeguu
                       api={api}
-                      articleId={articleId()}
+                      articleId={articleID}
                       setPersonalCopySaved={setPersonalCopySaved}
                       personalCopySaved={personalCopySaved}
                     />
@@ -412,14 +424,14 @@ export function Modal({
                     </div>
                   </s.ZeeguuRowFlexStart>
                   <s.ZeeguuRowFlexStart>
-                    {readArticleOpen ? (
+                    {readArticleOpen && (
                       <ToolbarButtons
                         translating={translateInReader}
                         pronouncing={pronounceInReader}
                         setTranslating={updateTranslateInReader}
                         setPronouncing={updatePronounceInReader}
                       />
-                    ) : null}
+                    )}
                     <StyledCloseButton
                       role="button"
                       onClick={handleClose}
@@ -442,10 +454,11 @@ export function Modal({
               </StyledHeading>
               {readArticleOpen === true && (
                 <ReadArticle
-                  articleId={articleId()}
+                  articleId={articleID}
+                  articleTopics={articleTopics}
                   api={api}
                   author={author}
-                  interactiveTextArray={interactiveTextArray}
+                  interactiveText={interactiveText}
                   interactiveTitle={interactiveTitle}
                   articleImage={articleImage}
                   openReview={openReview}
@@ -460,15 +473,15 @@ export function Modal({
                     updateArticleDifficultyFeedback
                   }
                   answerSubmitted={answerSubmitted}
+                  bookmarks={bookmarks}
+                  fetchBookmarks={updateBookmark}
                 />
               )}
 
               {reviewOpen === true && (
                 <WordsForArticleModal
-                  className="wordsForArticle"
                   api={api}
-                  articleID={articleId()}
-                  openExercises={openExercises}
+                  articleID={articleID}
                   openArticle={openArticle}
                 />
               )}
