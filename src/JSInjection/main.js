@@ -54,7 +54,7 @@ export function Main({ documentFromTab, url }) {
               isProbablyReadable = isProbablyReaderable(
                 documentFromTab,
                 minLength,
-                minScore,
+                minScore
               );
               ownIsProbablyReadable = checkReadability(url);
               if (!isProbablyReadable || !ownIsProbablyReadable) {
@@ -72,7 +72,7 @@ export function Main({ documentFromTab, url }) {
                     if (result_dict === "YES") {
                       setLanguageSupported(true);
                     }
-                  },
+                  }
                 );
               }
             } catch {
@@ -82,20 +82,20 @@ export function Main({ documentFromTab, url }) {
           () => {
             setFoundError(true);
             setIsAPIDown(true);
-          },
+          }
         );
       },
       () => {
         setFoundError(true);
         setIsAPIDown(true);
-      },
+      }
     );
   }, [url]);
 
   useEffect(() => {
     if (languageSupported !== undefined && isReadable !== undefined)
       setFoundError(
-        sessionId === undefined || !languageSupported || !isReadable,
+        sessionId === undefined || !languageSupported || !isReadable
       );
   }, [languageSupported, isReadable]);
 
@@ -130,17 +130,10 @@ export function Main({ documentFromTab, url }) {
       />
     );
   }
-
-  let cleanedContent = individualClean(article.content, url, cleanAfterArray);
-  cleanedContent = generalClean(cleanedContent);
-  cleanedContent = DOMPurify.sanitize(cleanedContent);
   return (
     <Modal
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
-      title={article.title}
-      author={article.byline}
-      content={cleanedContent}
       api={api}
       url={url}
     />

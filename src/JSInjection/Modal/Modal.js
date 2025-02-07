@@ -20,7 +20,7 @@ import { EXTENSION_SOURCE } from "../constants";
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
 import { getNativeLanguage, getUsername } from "../../popup/functions";
-import { ReadArticle } from "./ReadArticle";
+import { ArticleRenderer } from "./ReadArticle";
 import WordsForArticleModal from "./WordsForArticleModal";
 import ToolbarButtons from "./ToolbarButtons";
 import useUILanguage from "../../zeeguu-react/src/assorted/hooks/uiLanguageHook";
@@ -45,18 +45,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ZeeguuError from "../ZeeguuError";
 import useUserPreferences from "../../zeeguu-react/src/hooks/useUserPreferences.js";
 
-export function Modal({
-  title,
-  content,
-  modalIsOpen,
-  setModalIsOpen,
-  api,
-  url,
-  author,
-}) {
+export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
   const [readArticleOpen, setReadArticleOpen] = useState(true);
   const [reviewOpen, setReviewOpen] = useState(false);
-  const [exerciseOpen, setExerciseOpen] = useState(false);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [isTimedOut, setIsTimedOut] = useState();
   const {
@@ -75,7 +66,6 @@ export function Modal({
   const [username, setUsername] = useState();
   const [isHovered, setIsHovered] = useState(false);
 
-  const [loadingPersonalCopy, setLoadingPersonalCopy] = useState(true);
   const [personalCopySaved, setPersonalCopySaved] = useState(false);
   const [articleImage, setarticleImage] = useState();
   const [bookmarks, setBookmarks] = useState([]);
@@ -99,7 +89,7 @@ export function Modal({
       );
   }
 
-  function updateBookmark() {
+  function updateBookmarks() {
     if (articleInfo)
       api.bookmarksForArticle(articleInfo.id, (bookmarks) => {
         setBookmarks(bookmarks);
@@ -191,79 +181,68 @@ export function Modal({
     );
   }
   useEffect(() => {
-    api.getOwnTexts((articles) => {
-      checkOwnTexts(articles);
-      setLoadingPersonalCopy(false);
-    });
-  }, [articleID]);
-
-  useEffect(() => {
     const timedOutTimer = setTimeout(() => {
       setIsTimedOut(true);
-    }, 15000);
+    }, 10000);
     scrollEvents.current = [];
     lastSampleScroll.current = 0;
     setScrollPosition(0);
-    if (content !== undefined) {
+    if (url !== undefined) {
       let info = {
         url: url,
-        htmlContent: content,
-        title: title,
-        authors: author,
       };
       api.findOrCreateArticle(info, (result_dict) => {
         if (result_dict.includes("Language not supported")) {
           return alert("not readable");
         }
         let artinfo = JSON.parse(result_dict);
-        console.log("Created Article in the Modal JS constructore...: ");
-        console.dir(artinfo);
-        setArticleInfo(artinfo);
-        let articleTopics = artinfo.topics_list.map((x) => x[0]);
-        setArticleTopics(articleTopics);
         let engine = new ZeeguuSpeech(api, artinfo.language);
+        let articleTopics = artinfo.topics_list.map((x) => x[0]);
+
+        setArticleID(artinfo.id);
+        setArticleInfo(artinfo);
+        setArticleTopics(articleTopics);
         setSpeechEngine(engine);
-        api.getArticleInfo(artinfo.id, (articleData) => {
-          console.log("Got Article Info in the Modal JS constructore...: ");
-          setArticleID(artinfo.id);
-          setInteractiveText(
-            new InteractiveText(
-              articleData.tokenized_paragraphs,
-              articleData.id,
-              true,
-              api,
-              articleData.translations,
-              api.TRANSLATE_TEXT,
-              articleData.language,
-              EXTENSION_SOURCE,
-              engine
-            )
-          );
-          let itTitle = new InteractiveText(
-            articleData.tokenized_title,
-            articleData.id,
-            false,
+        setPersonalCopySaved(artinfo["has_personal_copy"]);
+
+        setInteractiveText(
+          new InteractiveText(
+            artinfo.tokenized_paragraphs,
+            artinfo.id,
+            true,
             api,
-            articleData.translations,
+            artinfo.translations,
             api.TRANSLATE_TEXT,
-            articleData.language,
+            artinfo.language,
             EXTENSION_SOURCE,
             engine
+          )
+        );
+        setInteractiveTitle(
+          new InteractiveText(
+            artinfo.tokenized_title,
+            artinfo.id,
+            false,
+            api,
+            artinfo.translations,
+            api.TRANSLATE_TEXT,
+            artinfo.language,
+            EXTENSION_SOURCE,
+            engine
+          )
+        );
+
+        setBookmarks(artinfo.translations);
+        api.readingSessionCreate(artinfo.id, (sessionID) => {
+          setReadingSessionId(sessionID);
+          api.setArticleOpened(artinfo.id);
+          api.logReaderActivity(
+            api.OPEN_ARTICLE,
+            artinfo.id,
+            sessionID,
+            EXTENSION_SOURCE
           );
-          setInteractiveTitle(itTitle);
-          setBookmarks(articleData.translations);
-          console.log("Creating reading session");
-          api.readingSessionCreate(articleData.id, (sessionID) => {
-            setReadingSessionId(sessionID);
-            api.setArticleOpened(articleData.id);
-            api.logReaderActivity(
-              api.OPEN_ARTICLE,
-              articleData.id,
-              sessionID,
-              EXTENSION_SOURCE
-            );
-            clearTimeout(timedOutTimer);
-          });
+          clearTimeout(timedOutTimer);
         });
       });
     }
@@ -307,27 +286,14 @@ export function Modal({
     window.location.reload();
   }
 
-  function checkOwnTexts(articles) {
-    if (articles.length !== 0) {
-      for (var i = 0; i < articles.length; i++) {
-        if (articles[i].id === articleID) {
-          setPersonalCopySaved(true);
-          break;
-        }
-      }
-    }
-  }
-
   function openReview() {
     setLogContext("WORDS REVIEW");
     setReviewOpen(true);
     setReadArticleOpen(false);
-    setExerciseOpen(false);
   }
 
   function openArticle() {
     setReadArticleOpen(true);
-    setExerciseOpen(false);
     setReviewOpen(false);
     setLogContext("ARTICLE");
   }
@@ -363,10 +329,7 @@ export function Modal({
     );
   };
 
-  if (
-    (interactiveText === undefined || loadingPersonalCopy) &&
-    isTimedOut === undefined
-  ) {
+  if (interactiveText === undefined && isTimedOut === undefined) {
     return <ZeeguuLoader />;
   }
   if (isTimedOut) {
@@ -453,7 +416,7 @@ export function Modal({
                 )}
               </StyledHeading>
               {readArticleOpen === true && (
-                <ReadArticle
+                <ArticleRenderer
                   articleId={articleID}
                   articleTopics={articleTopics}
                   api={api}
@@ -474,7 +437,7 @@ export function Modal({
                   }
                   answerSubmitted={answerSubmitted}
                   bookmarks={bookmarks}
-                  fetchBookmarks={updateBookmark}
+                  fetchBookmarks={updateBookmarks}
                 />
               )}
 

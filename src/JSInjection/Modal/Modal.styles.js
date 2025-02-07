@@ -208,8 +208,6 @@ export const StyledModal = styled(ReactModal)`
 `;
 
 export const OverwriteZeeguu = styled.div`
-  /** Zeeguu Reader **/
-
   /** Exercises **/
 
   .wordSourceText {

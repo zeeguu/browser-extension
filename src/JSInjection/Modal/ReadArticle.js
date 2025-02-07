@@ -9,10 +9,10 @@ import { random } from "../../zeeguu-react/src/utils/basic/arrays";
 import ArticleStatInfo from "../../zeeguu-react/src/components/ArticleStatInfo";
 import * as s from "../../zeeguu-react/src/reader/ArticleReader.sc";
 
-export function ReadArticle({
+export function ArticleRenderer({
   articleId,
   articleTopics,
-  api,
+
   author,
   interactiveText,
   interactiveTitle,
@@ -20,9 +20,6 @@ export function ReadArticle({
   openReview,
   translating,
   pronouncing,
-  url,
-  setPersonalCopySaved,
-  personalCopySaved,
   articleInfo,
   setLikedState,
   updateArticleDifficultyFeedback,
