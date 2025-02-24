@@ -10,19 +10,14 @@ import {
   deleteTimeouts,
 } from "../popup/functions";
 import { Article } from "./Modal/Article";
-import { generalClean } from "./Cleaning/generelClean";
-import {
-  cleanAfterArray,
-  cleanDOMAfter,
-  individualClean,
-} from "./Cleaning/pageSpecificClean";
+import { cleanDOMAfter } from "./Cleaning/pageSpecificClean";
 import Zeeguu_API from "../zeeguu-react/src/api/Zeeguu_API";
-import DOMPurify from "dompurify";
 import ZeeguuLoader from "./ZeeguuLoader";
 import { API_URL } from "../config";
 import ZeeguuError from "./ZeeguuError";
 import { isProbablyReaderable } from "@mozilla/readability";
 import { checkReadability } from "../popup/checkReadability";
+import { APIContext } from "../zeeguu-react/src/contexts/APIContext";
 
 export function Main({ documentFromTab, url }) {
   const [article, setArticle] = useState();
@@ -131,12 +126,14 @@ export function Main({ documentFromTab, url }) {
     );
   }
   return (
-    <Modal
-      modalIsOpen={modalIsOpen}
-      setModalIsOpen={setModalIsOpen}
-      api={api}
-      url={url}
-    />
+    <APIContext.Provider value={api}>
+      <Modal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        api={api}
+        url={url}
+      />
+    </APIContext.Provider>
   );
 }
 
