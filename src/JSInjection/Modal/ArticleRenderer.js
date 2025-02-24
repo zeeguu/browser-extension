@@ -1,4 +1,3 @@
-/*global chrome*/
 import { useState } from "react";
 import { TranslatableText } from "../../zeeguu-react/src/reader/TranslatableText";
 import { InvisibleBox, StyledBox } from "./Modal.styles";
