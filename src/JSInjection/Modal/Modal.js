@@ -1,4 +1,3 @@
-/*global chrome*/
 import { useState, useEffect, useRef } from "react";
 
 import {
@@ -20,7 +19,7 @@ import { EXTENSION_SOURCE } from "../constants";
 import InteractiveText from "../../zeeguu-react/src/reader/InteractiveText";
 import { getMainImage } from "../Cleaning/generelClean";
 import { getNativeLanguage, getUsername } from "../../popup/functions";
-import { ArticleRenderer } from "./ReadArticle";
+import { ArticleRenderer } from "./ArticleRenderer";
 import WordsForArticleModal from "./WordsForArticleModal";
 import ToolbarButtons from "./ToolbarButtons";
 import useUILanguage from "../../zeeguu-react/src/assorted/hooks/uiLanguageHook";
@@ -85,7 +84,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
     if (readingSessionIdRef.current)
       api.readingSessionUpdate(
         readingSessionIdRef.current,
-        activeSessionDurationRef.current
+        activeSessionDurationRef.current,
       );
   }
 
@@ -143,10 +142,10 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
     }
     let endArticle =
       scrollElement.scrollHeight - scrollElement.clientHeight - bottomRowHeight;
-    let ratioValue = ratio(scrollY, endArticle);
+
     // Should we allow the ratio to go above 1?
     // Above 1 is the area where the feedback + exercises are.
-    return ratioValue;
+    return ratio(scrollY, endArticle);
   }
 
   const handleScroll = () => {
@@ -168,7 +167,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       logContextRef.current + " FOCUSED",
       articleID,
       "",
-      EXTENSION_SOURCE
+      EXTENSION_SOURCE,
     );
   }
 
@@ -177,7 +176,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       logContextRef.current + " LOST FOCUS",
       articleID,
       "",
-      EXTENSION_SOURCE
+      EXTENSION_SOURCE,
     );
   }
   useEffect(() => {
@@ -215,8 +214,8 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
             api.TRANSLATE_TEXT,
             artinfo.language,
             EXTENSION_SOURCE,
-            engine
-          )
+            engine,
+          ),
         );
         setInteractiveTitle(
           new InteractiveText(
@@ -228,8 +227,8 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
             api.TRANSLATE_TEXT,
             artinfo.language,
             EXTENSION_SOURCE,
-            engine
-          )
+            engine,
+          ),
         );
 
         setBookmarks(artinfo.translations);
@@ -240,7 +239,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
             api.OPEN_ARTICLE,
             artinfo.id,
             sessionID,
-            EXTENSION_SOURCE
+            EXTENSION_SOURCE,
           );
           clearTimeout(timedOutTimer);
         });
@@ -260,6 +259,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       window.removeEventListener("scroll", handleScroll, true);
       window.removeEventListener("beforeunload", handleClose, true);
     };
+    // eslint-disable-next-line
   }, []);
 
   localStorage.setItem("native_language", nativeLang);
@@ -273,7 +273,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       articleID,
       scrollEvents.current.length,
       JSON.stringify(scrollEvents.current).slice(0, 4096),
-      EXTENSION_SOURCE
+      EXTENSION_SOURCE,
     );
     api.logReaderActivity(api.ARTICLE_CLOSED, articleID, "", EXTENSION_SOURCE);
     window.removeEventListener("focus", logFocus);
@@ -308,7 +308,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       api.LIKE_ARTICLE,
       articleInfo.id,
       state,
-      EXTENSION_SOURCE
+      EXTENSION_SOURCE,
     );
   };
 
@@ -319,13 +319,13 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
       () => {
         setAnswerSubmitted(true);
         setArticleInfo(newArticleInfo);
-      }
+      },
     );
     api.logReaderActivity(
       api.DIFFICULTY_FEEDBACK,
       articleInfo.id,
       answer,
-      EXTENSION_SOURCE
+      EXTENSION_SOURCE,
     );
   };
 
@@ -355,7 +355,7 @@ export function Modal({ modalIsOpen, setModalIsOpen, api, url, author }) {
                       <a href="https://www.zeeguu.org">
                         <img
                           src={BROWSER_API.runtime.getURL(
-                            "images/zeeguuLogo.svg"
+                            "images/zeeguuLogo.svg",
                           )}
                           alt={"Zeeguu logo"}
                           className="logoModal"
