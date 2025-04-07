@@ -31,6 +31,13 @@
     {
       "matches": ["*://*.zeeguu.org/*"],
       "js": ["injectOnZeeguuOrg.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
     }
   ],
   "externally_connectable": {

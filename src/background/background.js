@@ -93,3 +93,16 @@ BROWSER_API.contextMenus.onClicked.addListener(async (clickData) => {
 BROWSER_API.runtime.onInstalled.addListener(() => {
   BROWSER_API.contextMenus.create(contextMenuReadArticle);
 });
+
+//For selected text extension
+BROWSER_API.runtime.onMessage.addListener(
+  async (request, sender, sendResponse) => {
+    if (request.type === "SELECTED_TEXT") {
+      const { selectedText, url } = request;
+      console.log("Selected text:", selectedText);
+      console.log("URL:", url);
+
+
+    }
+  },
+);
