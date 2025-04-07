@@ -1,3 +1,6 @@
+//Debugging  check
+console.log("Content script loaded");
+
 let selectedText = "";
 let isOverlayActive = false;
 
