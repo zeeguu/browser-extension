@@ -28,7 +28,7 @@ function showSmallOverlay(x, y, selectedText, url) {
     smallOverlay.style.left = `${x + window.scrollX}px`;
     smallOverlay.style.cursor = "pointer";
     smallOverlay.style.zIndex = "1000";
-    smallOverlay.src = chrome.runtime.getURL("/images/gold-elephant16.png");
+    smallOverlay.src = chrome.runtime.getURL("/images/selection/gold-elephant16.png");
 
     document.body.appendChild(smallOverlay);
     isOverlayActive = true;

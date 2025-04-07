@@ -49,6 +49,9 @@
   "web_accessible_resources": [
     {
       "resources": [
+        "images/selection/gold-elephant16.png",
+        "images/selection/gold-elephant32.png",
+        "images/selection/gold-elephant48.png",
         "images/translate.svg",
         "images/sound.svg",
         "images/zeeguuLogo.svg",
