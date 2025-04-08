@@ -1,4 +1,4 @@
-export function createSmallOverlay(x, y, isOverlayActive, selectedText, url, documentTitle) {
+export default function createSmallOverlay(x, y, isOverlayActive, selectedText, url, documentTitle) {
     // Remove any existing small overlay
     const existingSmallOverlay = document.getElementById("smallOverlay");
     if (existingSmallOverlay) existingSmallOverlay.remove();
@@ -44,4 +44,6 @@ export function createSmallOverlay(x, y, isOverlayActive, selectedText, url, doc
         clearTimeout(timeoutId); // Clear the timeout to prevent it from running
         isOverlayActive = false;
     });
+
+    return isOverlayActive;
 }
