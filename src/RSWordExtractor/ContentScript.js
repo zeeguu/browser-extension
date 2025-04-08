@@ -13,14 +13,17 @@ document.addEventListener("mouseup", (event) => {
     let selection = window.getSelection();
     selectedText = selection.toString();
     let url = window.location.href;
+    let documentTitle = document.title;
+    // Debugging log:
+    console.log("documentTitle: " + documentTitle);
 
     if (selectedText.length > 0) {
-        showSmallOverlay(event.clientX, event.clientY, selectedText, url);
+        showSmallOverlay(event.clientX, event.clientY, selectedText, url, documentTitle);
         selection.removeAllRanges();
     }
 });
 
-function showSmallOverlay(x, y, selectedText, url) {
+function showSmallOverlay(x, y, selectedText, url, documentTitle) {
     // Remove any existing small overlay
     const existingSmallOverlay = document.getElementById("smallOverlay");
     if (existingSmallOverlay) existingSmallOverlay.remove();
@@ -54,11 +57,12 @@ function showSmallOverlay(x, y, selectedText, url) {
 
     smallOverlay.addEventListener("click", () => {
 
-        // Send selected text and URL to the background script
+        // Send selected text, URL and documentTitle to the background script
         chrome.runtime.sendMessage({
             type: "SELECTED_TEXT",
             selectedText: selectedText,
             url: url,
+            documentTitle: documentTitle
         });
 
         smallOverlay.remove();
