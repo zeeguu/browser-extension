@@ -1,3 +1,5 @@
+import textSelectionUI from "../textSelectionUI.js";
+
 export default function createSmallOverlay(x, y, isOverlayActive, selectedText, url, documentTitle) {
     // Remove any existing small overlay
     const existingSmallOverlay = document.getElementById("smallOverlay");
@@ -31,6 +33,8 @@ export default function createSmallOverlay(x, y, isOverlayActive, selectedText, 
     }, 3000);
 
     smallOverlay.addEventListener("click", () => {
+        //debugging log:
+        console.log("clicked");
 
         // Send selected text, URL and documentTitle to the background script
         chrome.runtime.sendMessage({
@@ -40,9 +44,21 @@ export default function createSmallOverlay(x, y, isOverlayActive, selectedText, 
             documentTitle: documentTitle
         });
 
+        //debugging log:
+        console.log("After backgroundscript");
+
+        //Initiating the text UI corresponing to Zeeguu-article UI 
+        textSelectionUI(selectedText, url, documentTitle);
+        // Debugging log:
+        console.log("Selected text:", selectedText);
+        console.log("URL:", url);
+        console.log("Document title:", documentTitle);
+
         smallOverlay.remove();
         clearTimeout(timeoutId); // Clear the timeout to prevent it from running
         isOverlayActive = false;
+
+
     });
 
     return isOverlayActive;

@@ -8,6 +8,7 @@ import {
 import { getIsLoggedIn, getUserInfoDictFromCookies } from "../popup/cookies";
 import Zeeguu_API from "../zeeguu-react/src/api/Zeeguu_API";
 import { EXTENSION_SOURCE } from "../JSInjection/constants";
+import textSelectionUI from "../RSWordExtractor/textSelectionUI";
 
 BROWSER_API.runtime.onMessageExternal.addListener(
   (request, sender, sendResponse) => {
