@@ -21,6 +21,8 @@ export default function createSmallOverlay(x, y, isOverlayActive, selectedText, 
 
     document.body.appendChild(smallOverlay);
     isOverlayActive = true;
+    //Debugging:
+    console.log("small overlay");
 
     // Saved in variable to be able to clear it onClick:
     let timeoutId = setTimeout(() => {
