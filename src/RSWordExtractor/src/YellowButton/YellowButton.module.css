@@ -1,0 +1,15 @@
+.yellowButton {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: rgb(255, 187, 84);
+  color: rgb(25, 118, 210);
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.yellowButton:hover {
+  background: rgb(242, 150, 11);
+}
