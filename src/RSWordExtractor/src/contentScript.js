@@ -11,7 +11,8 @@ document.body.appendChild(container);
 const App = () => {
   // Using useState (overlay) to manage overlays
   const [overlay, setOverlay] = useState(null);
-  const [isOverlayActive, setIsOverlayActive] = useState(false);
+  const [isSmallOverlayActive, setIsSmallOverlayActive] = useState(false);
+  const [isUIActive, setIsUIActive] = useState(false);
 
   // Collecting all the info of the selection in one state
   const [selection, setSelection] = useState({
@@ -26,7 +27,7 @@ const App = () => {
   const handleSmallOverlayClick = (event) => {
     event.stopPropagation();
     setOverlay(null);
-    setIsOverlayActive(false);
+    setIsSmallOverlayActive(false);
     window.getSelection().removeAllRanges();
 
     // Send selected text, URL and documentTitle to the background script
@@ -45,18 +46,22 @@ const App = () => {
         onClick={handleTextSelectionClick}
       />
     );
+    setIsUIActive(true);
   };
 
   const handleTextSelectionClick = () => {
     setOverlay(null);
-    setIsOverlayActive(false);
+    setIsUIActive(false);
+    // We use this for the onClick for the closebutton in the TextContainer
+    // so it seems redundant ?? 
+    setIsSmallOverlayActive(false);
   };
 
   // removing small overlay when timeout
   const handleTimeout = () => {
     console.log("Overlay timed out");
     setOverlay(null);
-    setIsOverlayActive(false);
+    setIsSmallOverlayActive(false);
     window.getSelection().removeAllRanges();
   };
 
@@ -64,7 +69,7 @@ const App = () => {
   useEffect(() => {
     // Function for mouseup event listner
     const handleMouseUp = (event) => {
-      if (event.target.id === "smallOverlay" || isOverlayActive) return;
+      if (event.target.id === "smallOverlay" || isSmallOverlayActive || isUIActive) return;
 
       const text = window.getSelection().toString().trim();
       // showing small overlay, if selected text
@@ -77,7 +82,7 @@ const App = () => {
           url: window.location.href,
           documentTitle: document.title,
         });
-        setIsOverlayActive(true);
+        setIsSmallOverlayActive(true);
       }
     };
 
@@ -92,7 +97,7 @@ const App = () => {
 
   // rendering the overlay when the states are updated.
   useEffect(() => {
-    if (!isOverlayActive || selection.selectedText.length === 0) return;
+    if (!isSmallOverlayActive || isUIActive || selection.selectedText.length === 0) return;
 
     setOverlay(
       <SmallOverlay
@@ -102,7 +107,7 @@ const App = () => {
         y={selection.y}
       />
     );
-  }, [selection, isOverlayActive]);
+  }, [selection, isSmallOverlayActive]);
 
   return <>{overlay}</>;
 };
