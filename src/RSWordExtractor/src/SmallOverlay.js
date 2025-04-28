@@ -26,7 +26,7 @@ const SmallOverlay = ({ onClick, onTimeout, x, y }) => {
   return (
     <img
       id="smallOverlay"
-      src={chrome.runtime.getURL("/images/gold-elephant16.png")}
+      src={chrome.runtime.getURL("../../images/zeeguu16.png")} // "/images/gold-elephant16.png"
       style={style}
       onClick={onClick}
       alt="Small Overlay"

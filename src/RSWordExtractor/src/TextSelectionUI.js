@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import SideMenu from "./SideMenu/SideMenu.js";
+import Navbar from "./Navbar/Navbar.js";
 import TextContainer from "./TextContainer/TextContainer.js";
 
 const TextSelectionUI = ({ selectedText, onClick }) => {
@@ -14,13 +14,16 @@ const TextSelectionUI = ({ selectedText, onClick }) => {
     justifyContent: "center",
     alignItems: "center",
     zIndex: "1000",
+    flexdirection: "column",
   };
 
   return (
     <div id="textOverlay" style={overlayStyle}>
-      <div>
-        <SideMenu />
+      <div style={{ height: "100%" }}>
         <TextContainer text={selectedText} onClick={onClick} />
+      </div>
+      <div style={{ height: "100%" }}>
+        <Navbar onClick={onClick} />
       </div>
     </div>
   );
