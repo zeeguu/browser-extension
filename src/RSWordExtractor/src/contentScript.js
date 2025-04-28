@@ -66,7 +66,7 @@ const App = () => {
     const handleMouseUp = (event) => {
       if (event.target.id === "smallOverlay" || isOverlayActive) return;
 
-      const text = window.getSelection().toString();
+      const text = window.getSelection().toString().trim();
       // showing small overlay, if selected text
       if (text.length > 0) {
         // Setting state values based on the selection
