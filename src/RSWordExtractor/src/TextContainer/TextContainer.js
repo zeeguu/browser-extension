@@ -30,6 +30,7 @@ const TextContainer = ({ text, onClick }) => {
           fontSize: "18px",
           paddingTop: "10px",
           paddingBottom: "10px",
+          color: "black"
         }}
       >
         {text}
