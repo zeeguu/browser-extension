@@ -89,9 +89,34 @@ const App = () => {
     // Adding event listner
     document.addEventListener("mouseup", handleMouseUp);
 
+    // handle clicks outside the overlay
+    const clickedOutside = (event) => {
+      //debugging check
+      console.log("Clicked: " + event.target.id);
+
+      if (isSmallOverlayActive && event.target.id !== "smallOverlay") {
+        //debugging check
+        console.log("Clicked outside the small overlay");
+
+        setOverlay(null);
+        setIsSmallOverlayActive(false);
+        window.getSelection().removeAllRanges();
+      }
+      if (isUIActive && event.target.id !== "textOverlay") {
+        //debugging check
+        console.log("Clicked outside the text overlay");
+        setOverlay(null);
+        setIsUIActive(false);
+        window.getSelection().removeAllRanges();
+      }
+    }
+
+    document.addEventListener("click", clickedOutside);
+
     // Cleaning event listener on unmount
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
+      document.addEventListener("click", clickedOutside);
     };
   }, []);
 
