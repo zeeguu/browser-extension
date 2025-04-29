@@ -1,5 +1,5 @@
 import React from "react";
-import YellowButton from "../YellowButton/YellowButton.js";
+import { StyledSmallButton } from "../../../JSInjection/Modal/Buttons.styles.js";
 
 const TextContainer = ({ text, onClick }) => {
   return (
@@ -41,7 +41,7 @@ const TextContainer = ({ text, onClick }) => {
           marginBottom: "0px",
         }}
       >
-        <YellowButton text="Close" onClick={onClick} />
+        <StyledSmallButton text="Close" onClick={onClick} />
       </div>
     </div>
   );
