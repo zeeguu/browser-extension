@@ -25,10 +25,14 @@ const App = () => {
 
   // remove small overlay when clicked and send selected text to background script
   const handleSmallOverlayClick = (event) => {
-    event.stopPropagation();
-    setOverlay(null);
+    event.stopPropagation(); //?
     setIsSmallOverlayActive(false);
     window.getSelection().removeAllRanges();
+
+    const handleUIClose = () => {
+      setOverlay(null);
+      setIsUIActive(false);
+    };
 
     // Send selected text, URL and documentTitle to the background script
     chrome.runtime.sendMessage({
@@ -43,33 +47,22 @@ const App = () => {
         selectedText={selection.selectedText}
         url={selection.url}
         documentTitle={selection.documentTitle}
-        onClick={handleTextSelectionClick}
+        onClick={handleUIClose}
       />
     );
     setIsUIActive(true);
-  };
-
-  const handleTextSelectionClick = () => {
-    setOverlay(null);
-    setIsUIActive(false);
-    // We use this for the onClick for the closebutton in the TextContainer
-    // so it seems redundant ?? 
-    setIsSmallOverlayActive(false);
-  };
-
-  // removing small overlay when timeout
-  const handleTimeout = () => {
-    console.log("Overlay timed out");
-    setOverlay(null);
-    setIsSmallOverlayActive(false);
-    window.getSelection().removeAllRanges();
   };
 
   // useEffect that sets up the eventlistner for mouseup events (runs once on on-mount of the App component)
   useEffect(() => {
     // Function for mouseup event listner
     const handleMouseUp = (event) => {
-      if (event.target.id === "smallOverlay" || isSmallOverlayActive || isUIActive) return;
+      if (
+        event.target.id === "smallOverlay" ||
+        isSmallOverlayActive ||
+        isUIActive
+      )
+        return;
 
       const text = window.getSelection().toString().trim();
       // showing small overlay, if selected text
@@ -97,7 +90,20 @@ const App = () => {
 
   // rendering the overlay when the states are updated.
   useEffect(() => {
-    if (!isSmallOverlayActive || isUIActive || selection.selectedText.length === 0) return;
+    if (
+      !isSmallOverlayActive ||
+      isUIActive ||
+      selection.selectedText.length === 0
+    )
+      return;
+
+    // removing small overlay when timeout
+    const handleTimeout = () => {
+      console.log("Overlay timed out");
+      setOverlay(null);
+      setIsSmallOverlayActive(false);
+      window.getSelection().removeAllRanges();
+    };
 
     setOverlay(
       <SmallOverlay
