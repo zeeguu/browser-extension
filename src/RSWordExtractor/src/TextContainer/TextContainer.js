@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledSmallButton } from "../../../JSInjection/Modal/Buttons.styles.js";
-import { StyledButton } from "../../../zeeguu-react/src/components/allButtons.sc.js";
+//import { StyledButton } from "../../../zeeguu-react/src/components/allButtons.sc.js";
 
 const TextContainer = ({ text, onClick }) => {
   return (
@@ -8,17 +8,16 @@ const TextContainer = ({ text, onClick }) => {
       style={{
         flex: "1",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
         background: "white",
-        borderBottomLeftRadius: "8px",
-        borderTopLeftRadius: "8px",
+        borderRadius: "0px 0px 10px 10px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
         width: "800px",
         maxHeight: "80vh",
         overflow: "hidden",
         padding: "20px",
-        paddingBottom: "5px",
+        paddingBottom: "10px",
       }}
     >
       <div

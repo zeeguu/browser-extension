@@ -1,37 +1,40 @@
 import React, { useState } from "react";
 import ToolbarButtons from "../../../JSInjection/Modal/ToolbarButtons.js";
-
 import {
   StyledSmallButton,
   StyledCloseButton,
 } from "../../../JSInjection/Modal/Buttons.styles.js";
-
 import { BROWSER_API } from "../../../utils/browserApi.js";
 import colors from "../../../JSInjection/colors.js";
-import { StyledHeading } from "../../../JSInjection/Modal/Modal.styles.js"; // "./Modal.styles";
-//import { StyledModal, StyledHeading } from "./Modal.styles";
-
+import { StyledHeading } from "../../../JSInjection/Modal/Modal.styles.js";
 import * as s from "../../../JSInjection/Modal/Modal.sc";
-//import * as s from "./Modal.sc";
-
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
-
-//"../colors";
-
-// import colors from "../../../JSInjection/colors.js";
-// import { white } from "../../../zeeguu-react/src/components/colors.js";
+import styled from "styled-components";
 
 //const [isHovered, setIsHovered] = useState(false);
 
-const Navbar = (onClick) => {
+const Navbar = ({ onClick }) => {
+  const CustomizedStyledHeading = styled(StyledHeading)`
+    padding: 5px 20px 10px 30px;
+    border-radius: 10px 10px 0px 0px;
+  `;
+
+  const CustomizedTopElementsContainer = styled(s.TopElementsContainer)`
+    border-radius: 10px 10px 0px 0px;
+  `;
+
+  const CustomizedZeeguuRowFlexStart = styled(s.ZeeguuRowFlexStart)`
+    margin-top: 20px;
+  `;
+
   return (
-    <StyledHeading>
-      <s.TopElementsContainer>
-        <s.ZeeguuRowFlexStart>
+    <CustomizedStyledHeading>
+      <CustomizedTopElementsContainer>
+        <CustomizedZeeguuRowFlexStart>
           <StyledSmallButton>
             <a href="https://www.zeeguu.org">
               <img
-                src={BROWSER_API.runtime.getURL("images/zeeguuLogo.svg")}
+                src={BROWSER_API.runtime.getURL("images/zeeguu48.png")}
                 alt={"Zeeguu logo"}
                 className="logoModal"
               />
@@ -39,7 +42,7 @@ const Navbar = (onClick) => {
             <br />
             <span>Home</span>
           </StyledSmallButton>
-        </s.ZeeguuRowFlexStart>
+        </CustomizedZeeguuRowFlexStart>
 
         <s.ZeeguuRowFlexStart>
           <ToolbarButtons />
@@ -47,8 +50,8 @@ const Navbar = (onClick) => {
             <CloseSharpIcon sx={{ color: colors.gray }} />
           </StyledCloseButton>
         </s.ZeeguuRowFlexStart>
-      </s.TopElementsContainer>
-    </StyledHeading>
+      </CustomizedTopElementsContainer>
+    </CustomizedStyledHeading>
   );
   //   <div
   //     //inline for now
