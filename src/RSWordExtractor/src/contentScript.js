@@ -1,6 +1,6 @@
 import React, { StrictMode, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import SmallOverlay from "./SmallOverlay.js";
+import SmallOverlay from "../SmallOverlay/SmallOverlay.js";
 import TextSelectionUI from "./TextSelectionUI.js";
 
 // container for the React component

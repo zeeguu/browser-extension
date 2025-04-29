@@ -1,5 +1,6 @@
 import React from "react";
-import YellowButton from "../YellowButton/YellowButton.js";
+import { StyledSmallButton } from "../../../JSInjection/Modal/Buttons.styles.js";
+//import { StyledButton } from "../../../zeeguu-react/src/components/allButtons.sc.js";
 
 const TextContainer = ({ text, onClick }) => {
   return (
@@ -10,14 +11,13 @@ const TextContainer = ({ text, onClick }) => {
         flexDirection: "column",
         alignItems: "center",
         background: "white",
-        borderBottomLeftRadius: "8px",
-        borderBottomRightRadius: "8px",
+        borderRadius: "0px 0px 10px 10px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
         width: "800px",
         maxHeight: "80vh",
         overflow: "hidden",
         padding: "20px",
-        paddingBottom: "5px",
+        paddingBottom: "10px",
       }}
     >
       <div
@@ -42,7 +42,7 @@ const TextContainer = ({ text, onClick }) => {
           marginBottom: "0px",
         }}
       >
-        <YellowButton text="Close" onClick={onClick} />
+        <StyledSmallButton onClick={onClick}>Close</StyledSmallButton>
       </div>
     </div>
   );
