@@ -20,10 +20,11 @@ const TextSelectionUI = ({ selectedText, onClick }) => {
   return (
     <div id="textOverlay" style={overlayStyle}>
       <div style={{ height: "100%" }}>
-        <TextContainer text={selectedText} onClick={onClick} />
-      </div>
-      <div style={{ height: "100%" }}>
         <Navbar onClick={onClick} />
+      </div>
+
+      <div style={{ height: "100%" }}>
+        <TextContainer text={selectedText} onClick={onClick} />
       </div>
     </div>
   );

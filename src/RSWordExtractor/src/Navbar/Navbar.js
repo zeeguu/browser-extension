@@ -8,10 +8,7 @@ import {
 
 import { BROWSER_API } from "../../../utils/browserApi.js";
 import colors from "../../../JSInjection/colors.js";
-import {
-  StyledModal,
-  StyledHeading,
-} from "../../../JSInjection/Modal/Modal.styles.js"; // "./Modal.styles";
+import { StyledHeading } from "../../../JSInjection/Modal/Modal.styles.js"; // "./Modal.styles";
 //import { StyledModal, StyledHeading } from "./Modal.styles";
 
 import * as s from "../../../JSInjection/Modal/Modal.sc";
@@ -29,7 +26,7 @@ import CloseSharpIcon from "@mui/icons-material/CloseSharp";
 const Navbar = (onClick) => {
   return (
     <StyledHeading>
-      <s.SideElementsContainer>
+      <s.TopElementsContainer>
         <s.ZeeguuRowFlexStart>
           <StyledSmallButton>
             <a href="https://www.zeeguu.org">
@@ -42,14 +39,15 @@ const Navbar = (onClick) => {
             <br />
             <span>Home</span>
           </StyledSmallButton>
+        </s.ZeeguuRowFlexStart>
+
+        <s.ZeeguuRowFlexStart>
+          <ToolbarButtons />
           <StyledCloseButton role="button" onClick={onClick} id="qtClose">
             <CloseSharpIcon sx={{ color: colors.gray }} />
           </StyledCloseButton>
         </s.ZeeguuRowFlexStart>
-        <s.ZeeguuRowFlexStart>
-          <ToolbarButtons />
-        </s.ZeeguuRowFlexStart>
-      </s.SideElementsContainer>
+      </s.TopElementsContainer>
     </StyledHeading>
   );
   //   <div

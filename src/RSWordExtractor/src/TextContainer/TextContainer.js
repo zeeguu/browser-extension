@@ -8,7 +8,7 @@ const TextContainer = ({ text, onClick }) => {
       style={{
         flex: "1",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: "center",
         background: "white",
         borderBottomLeftRadius: "8px",
